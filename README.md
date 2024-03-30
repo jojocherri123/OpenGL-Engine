@@ -1,4 +1,4 @@
-This is my attempt at making an OpenGL engine
+This is my attempt at making an OpenGL engine with C++
 
 it is strictly still a WIP
 
