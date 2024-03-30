@@ -1,0 +1,1 @@
+/usr/bin/g++ -g -rdynamic CMakeFiles/OpenGLEngine.dir/src/main.cpp.o CMakeFiles/OpenGLEngine.dir/src/glad.c.o CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o -o OpenGLEngine  -lSDL2 -lglfw /usr/lib/x86_64-linux-gnu/libGLX.so /usr/lib/x86_64-linux-gnu/libOpenGL.so 
