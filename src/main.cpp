@@ -16,6 +16,7 @@
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include <stb/stb_image.h>
 
@@ -50,7 +51,13 @@ Camera gCamera;
 GLuint gtexture;
 
 Shader shader;
-Model ourModel;
+Model monkey;
+
+
+glm::vec4 lightColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
+glm::vec3 lightPos = glm::vec3(3.0f,0.3f,1.0f);
+Shader Lightshader;
+Model LightSource;
 
 
 static void GLclearAllErrors(){
@@ -78,81 +85,6 @@ void GetOpengGLVersionInfo()
     std::cout << "Version: " << glGetString(GL_VERSION) << std::endl;
     std::cout << "Shading Language: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
-
-void DrawCube()
-{
-
-    std::vector<GLfloat> VertexData{
-        // x,   y,    z,    X, Y textures
-        -0.5,-0.5, 0.5, 0.0, 4.0,
-         0.5,-0.5, 0.5, 4.0, 4.0,
-         0.5, 0.5, 0.5, 4.0, 0.0,
-        -0.5, 0.5, 0.5, 0.0, 0.0,
- 
-        -0.5,-0.5,-0.5, 0.0, 4.0,
-         0.5,-0.5,-0.5, 4.0, 4.0,
-         0.5, 0.5,-0.5, 4.0, 0.0,
-        -0.5, 0.5,-0.5, 0.0, 0.0,
- 
-         0.5,-0.5,-0.5, 0.0, 4.0,
-         0.5, 0.5,-0.5, 4.0, 4.0,
-         0.5, 0.5, 0.5, 4.0, 0.0,
-         0.5,-0.5, 0.5, 0.0, 0.0,
- 
-        -0.5, 0.5,-0.5, 0.0, 4.0,
-        -0.5,-0.5,-0.5, 4.0, 4.0,
-        -0.5,-0.5, 0.5, 4.0, 0.0,
-        -0.5, 0.5, 0.5, 0.0, 0.0,
- 
-        -0.5,-0.5,-0.5, 0.0, 4.0,
-         0.5,-0.5,-0.5, 4.0, 4.0,
-         0.5,-0.5, 0.5, 4.0, 0.0,
-        -0.5,-0.5, 0.5, 0.0, 0.0,
- 
-         0.5, 0.5,-0.5, 0.0, 4.0,
-        -0.5, 0.5,-0.5, 4.0, 4.0,
-        -0.5, 0.5, 0.5, 4.0, 0.0,
-         0.5, 0.5, 0.5, 0.0, 0.0
-
-    };
-
-        std::vector<GLuint> IndexBufferData{ 0,  1,  2,  2,  3, 0,
-                                             4,  5,  6,  6,  7, 4,
-                                             8,  9, 10, 10, 11, 8,
-                                            12, 13, 14, 14, 15, 12,
-                                            16, 17, 18, 18, 19, 16,
-                                            20, 21, 22, 22, 23, 20 };
-
-
-    glGenVertexArrays(1, &gVertexArrayObject);
-    glBindVertexArray(gVertexArrayObject);
-    glGenBuffers(1,&gIndexBufferObject);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gIndexBufferObject);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, IndexBufferData.size()*sizeof(GLuint), IndexBufferData.data(), GL_STATIC_DRAW);
-
-    glGenBuffers(1, &gGLVertexBufferObject);
-    glBindBuffer(GL_ARRAY_BUFFER, gGLVertexBufferObject);
-    glBufferData(GL_ARRAY_BUFFER, VertexData.size() * sizeof(GLfloat), VertexData.data(), GL_STATIC_DRAW);
-
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*5, (GLvoid*)0);
-
-    // glEnableVertexAttribArray(1);
-    // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*8, (GLvoid*)(sizeof(GLfloat)*3));
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(GLfloat)*5, (GLvoid*)(sizeof(GLfloat)*3));
-    
-    glBindVertexArray(0);
-    glDisableVertexAttribArray(0);
-    glDisableVertexAttribArray(1);
-    // glDisableVertexAttribArray(2);
-    
-
-}
-
 
 void InitializeProgram()
 {
@@ -257,8 +189,8 @@ void PreDraw()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+    // glEnable(GL_BLEND);
+    // glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
     glViewport(0, 0, SCRNWidth, SCRNHeight);
     glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
@@ -277,6 +209,7 @@ void PreDraw()
     if (u_ModelMatrix>=0){
         glUniformMatrix4fv(u_ModelMatrix,1,GL_FALSE,&model[0][0]);
     }else{
+        std::cout << "error finding u_ModelMatrix, misspell?" << std::endl;
         exit(1);
     }
 
@@ -289,6 +222,7 @@ void PreDraw()
         std::cout << "error finding u_ViewMatrix, misspell?" << std::endl;
         exit(1);
     }
+    
 
     glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)SCRNWidth/(float)SCRNHeight,0.1f,100.0f);
     
@@ -297,6 +231,30 @@ void PreDraw()
         glUniformMatrix4fv(u_PerspectionLocation,1,GL_FALSE,&perspective[0][0]);
     }else{
         std::cout << "error finding u_Perspective, misspell?" << std::endl;
+        exit(1);
+    }
+
+    GLint u_LightColor = glGetUniformLocation(shader.ID,"u_LightColor");
+    if (u_LightColor>=0){
+        glUniform4f(u_LightColor,lightColor.x,lightColor.y,lightColor.z,lightColor.w);
+    }else{
+        std::cout << "error finding u_LightColor, misspell?" << std::endl;
+        exit(1);
+    }
+
+    GLint u_LightPosition = glGetUniformLocation(shader.ID,"u_LightPosition");
+    if (u_LightPosition>=0){
+        glUniform3f(u_LightPosition,lightPos.x,lightPos.y,lightPos.z);
+    }else{
+        std::cout << "error finding lightPos, misspell?" << std::endl;
+        exit(1);
+    }
+
+    GLint u_CamPos = glGetUniformLocation(shader.ID,"u_CamPos");
+    if (u_CamPos>=0){
+        glUniform3f(u_CamPos,gCamera.mEye.x,gCamera.mEye.y,gCamera.mEye.z);
+    }else{
+        std::cout << "error finding u_CamPos, misspell?" << std::endl;
         exit(1);
     }
 
@@ -309,10 +267,55 @@ void Draw()
     glBindVertexArray(gVertexArrayObject);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
-    ourModel.Draw(shader);
-
-
+    monkey.Draw(shader);
+    
     glUseProgram(0);
+}
+
+void Light(){
+
+    Lightshader.use();
+
+    glm::mat4 model = glm::translate(glm::mat4(1.0f),lightPos);
+
+    GLint u_ModelMatrixLight = glGetUniformLocation(Lightshader.ID,"u_ModelMatrixLight");
+
+    if (u_ModelMatrixLight>=0){
+        glUniformMatrix4fv(u_ModelMatrixLight,1,GL_FALSE,&model[0][0]);
+    }else{
+        std::cout << "error finding u_ModelMatrixLight, misspell?" << std::endl;
+        exit(1);
+    }
+
+    glm::mat4 view = gCamera.getViewMatrix();
+
+    GLint u_ViewLocationLight = glGetUniformLocation(Lightshader.ID,"u_ViewMatrixLight");
+    if (u_ViewLocationLight>=0){
+        glUniformMatrix4fv(u_ViewLocationLight,1,GL_FALSE,&view[0][0]);
+    }else{
+        std::cout << "error finding u_ViewMatrixLight, misspell?" << std::endl;
+        exit(1);
+    }
+
+    glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)SCRNWidth/(float)SCRNHeight,0.1f,100.0f);
+    
+    GLint u_PerspectionLocation = glGetUniformLocation(Lightshader.ID,"u_ProjectionLight");
+    if (u_PerspectionLocation>=0){
+        glUniformMatrix4fv(u_PerspectionLocation,1,GL_FALSE,&perspective[0][0]);
+    }else{
+        std::cout << "error finding u_ProjectionLight, misspell?" << std::endl;
+        exit(1);
+    }
+    
+    GLint u_LightColor = glGetUniformLocation(Lightshader.ID,"u_LightColor");
+    if (u_LightColor>=0){
+        glUniform4f(u_LightColor,lightColor.x,lightColor.y,lightColor.z,lightColor.w);
+    }else{
+        std::cout << "error finding u_LightColor, misspell?" << std::endl;
+        exit(1);
+    }
+
+    LightSource.Draw(Lightshader);
 }
 
 void MainLoop()
@@ -326,6 +329,7 @@ void MainLoop()
         PreDraw();
 
         Draw();
+        Light();
 
         SDL_GL_SwapWindow(GraphicsWinow);
     }
@@ -334,6 +338,7 @@ void MainLoop()
 void CleanUp()
 {
     shader.deleteShader();
+    Lightshader.deleteShader();
     SDL_DestroyWindow(GraphicsWinow);
     SDL_Quit();
 }
@@ -342,10 +347,13 @@ int main()
 {
     
     InitializeProgram();
-    // stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(true);
+    
+    monkey.loadModel("../src/content/objects/monkey.obj");
 
-    ourModel.loadModel("../src/content/objects/monkey.obj");
+    LightSource.loadModel("../src/content/objects/light.obj");
     shader.GraphicsPipeLine("../src/includes/shader/shaders/vertex.glsl","../src/includes/shader/shaders/fragment.glsl");
+    Lightshader.GraphicsPipeLine("../src/includes/shader/shaders/light.vertex.glsl","../src/includes/shader/shaders/light.fragment.glsl");
 
     MainLoop();
     CleanUp();
