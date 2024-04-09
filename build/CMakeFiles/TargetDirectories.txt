@@ -1,3 +1,0 @@
-/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles/OpenGLEngine.dir
-/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles/edit_cache.dir
-/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles/rebuild_cache.dir
