@@ -12,17 +12,16 @@ class Shader{
     public:
 
         GLuint ID = 0;
-        // Shader(const char* vertexPath, const char* fragmentPath){
-        //     GraphicsPipeLine(vertexPath,fragmentPath);
-        // }
 
-        void GraphicsPipeLine(const char* vertexPath, const char* fragmentPath)
+        void GraphicsPipeLine(const char* vertexPath, const char* geomPath, const char* fragmentPath)
         {
 
             std::string VertexShaderSource = LoadShaderAsString(vertexPath);
+            std::string GeometryShaderSource = LoadShaderAsString(geomPath);
             std::string FragmentShaderSource = LoadShaderAsString(fragmentPath);
 
-            ID = CreateShaderProgram(VertexShaderSource, FragmentShaderSource);
+            ID = CreateShaderProgram(VertexShaderSource,GeometryShaderSource,FragmentShaderSource);
+                
         }
 
         void use(){
@@ -42,7 +41,6 @@ class Shader{
             
             std::ifstream myFile(filename.c_str());
 
-            // std::cout << myFile.is_open() << std::endl;
             if (myFile.is_open())
             {
                 while (std::getline(myFile, line))
@@ -66,6 +64,10 @@ class Shader{
             {
                 ShaderObject = glCreateShader(GL_FRAGMENT_SHADER);
             }
+            else if (type == GL_GEOMETRY_SHADER)
+            {
+                ShaderObject = glCreateShader(GL_GEOMETRY_SHADER);
+            }
 
             const char *src = source.c_str();
             glShaderSource(ShaderObject, 1, &src, nullptr);
@@ -83,12 +85,17 @@ class Shader{
 
                 if (type == GL_VERTEX_SHADER)
                 {
-                    std::cout << "ERROR: VERTEX SHADER COMPILATION FAILED \n"
+                    std::cerr << "ERROR: VERTEX SHADER COMPILATION FAILED \n"
                             << errorMessage << std::endl;
                 }
                 else if (type == GL_FRAGMENT_SHADER)
                 {
-                    std::cout << "ERROR: FRAGMENT SHADER COMPILATION FAILED \n"
+                    std::cerr << "ERROR: FRAGMENT SHADER COMPILATION FAILED \n"
+                            << errorMessage << std::endl;
+                }
+                else if (type == GL_GEOMETRY_SHADER)
+                {
+                    std::cerr << "ERROR: GEOMETRY SHADER COMPILATION FAILED \n"
                             << errorMessage << std::endl;
                 }
 
@@ -100,14 +107,18 @@ class Shader{
             return ShaderObject;
         }
 
-        GLuint CreateShaderProgram(const std::string &vs, const std::string &fs)
+        GLuint CreateShaderProgram(const std::string &vs, const std::string &gs,  const std::string &fs)
         {
             GLuint programObject = glCreateProgram();
             GLuint myVertexShader = CompileShader(GL_VERTEX_SHADER, vs);
+            GLuint myGeometryShader = CompileShader(GL_GEOMETRY_SHADER, gs);
             GLuint myFragmentShader = CompileShader(GL_FRAGMENT_SHADER, fs);
 
             glAttachShader(programObject, myVertexShader);
+            glAttachShader(programObject, myGeometryShader);
             glAttachShader(programObject, myFragmentShader);
+
+            
             glLinkProgram(programObject);
 
             glValidateProgram(programObject);

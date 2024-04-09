@@ -1,13 +1,13 @@
 #version 460 core
-
-
 out vec4 color;
 
 in vec2 texCoords;
 in vec3 normals;
 in vec3 crntPos;
 
-uniform sampler2D tex;
+uniform sampler2D texture_diffuse1;
+uniform sampler2D texture_specular1;
+
 uniform vec4 u_LightColor;
 uniform vec3 u_LightPosition;
 uniform vec3 u_CamPos;
@@ -32,6 +32,6 @@ void main(){
 
     };
 
-    color = texture(tex,texCoords) *u_LightColor *(diffuse + ambient + specular);
+    color = texture(texture_diffuse1,texCoords) *u_LightColor *(diffuse + ambient )+ texture(texture_specular1,texCoords) * specular;
 
 }

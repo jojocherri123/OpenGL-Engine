@@ -15,12 +15,11 @@ class Camera{
         void MoveBackward(float speed);
         void MoveLeft(float speed);
         void MoveRight(float speed);
+        glm::vec3 mEye;
 
     private:
-        glm::vec3 mEye;
         glm::vec3 mViewDirection;
         glm::vec3 mUpVector;
-        glm::vec3 mUpVector2;
 
         glm::vec2 mOldMousePosition;
 };

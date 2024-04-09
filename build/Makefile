@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL Engine"
+CMAKE_SOURCE_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build"
+CMAKE_BINARY_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build"
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build/CMakeFiles" "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build//CMakeFiles/progress.marks"
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles" "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build//CMakeFiles/progress.marks"
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build/CMakeFiles" 0
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles" 0
 .PHONY : all
 
 # The main clean target
@@ -129,53 +129,77 @@ OpenGLEngine/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/build
 .PHONY : OpenGLEngine/fast
 
-src/camera.o: src/camera.cpp.o
-.PHONY : src/camera.o
+src/includes/camera/camera.o: src/includes/camera/camera.cpp.o
+.PHONY : src/includes/camera/camera.o
 
 # target to build an object file
-src/camera.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o
-.PHONY : src/camera.cpp.o
+src/includes/camera/camera.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o
+.PHONY : src/includes/camera/camera.cpp.o
 
-src/camera.i: src/camera.cpp.i
-.PHONY : src/camera.i
+src/includes/camera/camera.i: src/includes/camera/camera.cpp.i
+.PHONY : src/includes/camera/camera.i
 
 # target to preprocess a source file
-src/camera.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/camera.cpp.i
-.PHONY : src/camera.cpp.i
+src/includes/camera/camera.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.i
+.PHONY : src/includes/camera/camera.cpp.i
 
-src/camera.s: src/camera.cpp.s
-.PHONY : src/camera.s
+src/includes/camera/camera.s: src/includes/camera/camera.cpp.s
+.PHONY : src/includes/camera/camera.s
 
 # target to generate assembly for a file
-src/camera.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/camera.cpp.s
-.PHONY : src/camera.cpp.s
+src/includes/camera/camera.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.s
+.PHONY : src/includes/camera/camera.cpp.s
 
-src/glad.o: src/glad.c.o
-.PHONY : src/glad.o
+src/includes/glad/glad.o: src/includes/glad/glad.c.o
+.PHONY : src/includes/glad/glad.o
 
 # target to build an object file
-src/glad.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/glad.c.o
-.PHONY : src/glad.c.o
+src/includes/glad/glad.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o
+.PHONY : src/includes/glad/glad.c.o
 
-src/glad.i: src/glad.c.i
-.PHONY : src/glad.i
+src/includes/glad/glad.i: src/includes/glad/glad.c.i
+.PHONY : src/includes/glad/glad.i
 
 # target to preprocess a source file
-src/glad.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/glad.c.i
-.PHONY : src/glad.c.i
+src/includes/glad/glad.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.i
+.PHONY : src/includes/glad/glad.c.i
 
-src/glad.s: src/glad.c.s
-.PHONY : src/glad.s
+src/includes/glad/glad.s: src/includes/glad/glad.c.s
+.PHONY : src/includes/glad/glad.s
 
 # target to generate assembly for a file
-src/glad.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/glad.c.s
-.PHONY : src/glad.c.s
+src/includes/glad/glad.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.s
+.PHONY : src/includes/glad/glad.c.s
+
+src/includes/importModel/model.o: src/includes/importModel/model.cpp.o
+.PHONY : src/includes/importModel/model.o
+
+# target to build an object file
+src/includes/importModel/model.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o
+.PHONY : src/includes/importModel/model.cpp.o
+
+src/includes/importModel/model.i: src/includes/importModel/model.cpp.i
+.PHONY : src/includes/importModel/model.i
+
+# target to preprocess a source file
+src/includes/importModel/model.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.i
+.PHONY : src/includes/importModel/model.cpp.i
+
+src/includes/importModel/model.s: src/includes/importModel/model.cpp.s
+.PHONY : src/includes/importModel/model.s
+
+# target to generate assembly for a file
+src/includes/importModel/model.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLEngine.dir/build.make CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.s
+.PHONY : src/includes/importModel/model.cpp.s
 
 src/main.o: src/main.cpp.o
 .PHONY : src/main.o
@@ -210,12 +234,15 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... OpenGLEngine"
-	@echo "... src/camera.o"
-	@echo "... src/camera.i"
-	@echo "... src/camera.s"
-	@echo "... src/glad.o"
-	@echo "... src/glad.i"
-	@echo "... src/glad.s"
+	@echo "... src/includes/camera/camera.o"
+	@echo "... src/includes/camera/camera.i"
+	@echo "... src/includes/camera/camera.s"
+	@echo "... src/includes/glad/glad.o"
+	@echo "... src/includes/glad/glad.i"
+	@echo "... src/includes/glad/glad.s"
+	@echo "... src/includes/importModel/model.o"
+	@echo "... src/includes/importModel/model.i"
+	@echo "... src/includes/importModel/model.s"
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"

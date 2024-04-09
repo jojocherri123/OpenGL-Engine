@@ -8,9 +8,10 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/glad.c" "CMakeFiles/OpenGLEngine.dir/src/glad.c.o" "gcc" "CMakeFiles/OpenGLEngine.dir/src/glad.c.o.d"
-  "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/camera.cpp" "CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o" "gcc" "CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o.d"
-  "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/main.cpp" "CMakeFiles/OpenGLEngine.dir/src/main.cpp.o" "gcc" "CMakeFiles/OpenGLEngine.dir/src/main.cpp.o.d"
+  "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/glad/glad.c" "CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o" "gcc" "CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o.d"
+  "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/camera/camera.cpp" "CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o" "gcc" "CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o.d"
+  "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/importModel/model.cpp" "CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o" "gcc" "CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o.d"
+  "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/main.cpp" "CMakeFiles/OpenGLEngine.dir/src/main.cpp.o" "gcc" "CMakeFiles/OpenGLEngine.dir/src/main.cpp.o.d"
   )
 
 # Targets to which this target links.

@@ -51,11 +51,11 @@ Camera gCamera;
 GLuint gtexture;
 
 Shader shader;
-Model monkey;
+Model backPack;
 
 
 glm::vec4 lightColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
-glm::vec3 lightPos = glm::vec3(3.0f,0.3f,1.0f);
+glm::vec3 lightPos = glm::vec3(0.0f,0.0f,1.0f);
 Shader Lightshader;
 Model LightSource;
 
@@ -205,7 +205,7 @@ void PreDraw()
     model = glm::scale(model, glm::vec3(1.0f,g_uScale,1.0f));
     
     GLint u_ModelMatrix = glGetUniformLocation(shader.ID,"u_ModelMatrix");
-
+    
     if (u_ModelMatrix>=0){
         glUniformMatrix4fv(u_ModelMatrix,1,GL_FALSE,&model[0][0]);
     }else{
@@ -267,7 +267,7 @@ void Draw()
     glBindVertexArray(gVertexArrayObject);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
-    monkey.Draw(shader);
+    backPack.Draw(shader);
     
     glUseProgram(0);
 }
@@ -349,11 +349,16 @@ int main()
     InitializeProgram();
     stbi_set_flip_vertically_on_load(true);
     
-    monkey.loadModel("../src/content/objects/monkey.obj");
-
+    backPack.loadModel("../src/content/objects/backpack/backpack.obj");
     LightSource.loadModel("../src/content/objects/light.obj");
-    shader.GraphicsPipeLine("../src/includes/shader/shaders/vertex.glsl","../src/includes/shader/shaders/fragment.glsl");
-    Lightshader.GraphicsPipeLine("../src/includes/shader/shaders/light.vertex.glsl","../src/includes/shader/shaders/light.fragment.glsl");
+
+    shader.GraphicsPipeLine("../src/includes/shader/shaders/vertex.glsl",
+                            "../src/includes/shader/shaders/geometry.glsl",
+                            "../src/includes/shader/shaders/fragment.glsl" );
+
+    Lightshader.GraphicsPipeLine("../src/includes/shader/shaders/light.vertex.glsl",
+                                "../src/includes/shader/shaders/light.geo.glsl",
+                                "../src/includes/shader/shaders/light.fragment.glsl");
 
     MainLoop();
     CleanUp();

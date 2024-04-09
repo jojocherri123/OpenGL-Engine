@@ -1,17 +1,22 @@
 [
 {
-  "directory": "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build",
-  "command": "/usr/bin/g++   -g -o CMakeFiles/OpenGLEngine.dir/src/main.cpp.o -c \"/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/main.cpp\"",
-  "file": "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/main.cpp"
+  "directory": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/OpenGLEngine.dir/src/main.cpp.o -c \"/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/main.cpp\"",
+  "file": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/main.cpp"
 },
 {
-  "directory": "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build",
-  "command": "/usr/bin/gcc   -g -o CMakeFiles/OpenGLEngine.dir/src/glad.c.o -c \"/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/glad.c\"",
-  "file": "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/glad.c"
+  "directory": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build",
+  "command": "/usr/bin/gcc   -g -o CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o -c \"/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/glad/glad.c\"",
+  "file": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/glad/glad.c"
 },
 {
-  "directory": "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build",
-  "command": "/usr/bin/g++   -g -o CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o -c \"/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/camera.cpp\"",
-  "file": "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/camera.cpp"
+  "directory": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o -c \"/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/camera/camera.cpp\"",
+  "file": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/camera/camera.cpp"
+},
+{
+  "directory": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build",
+  "command": "/usr/bin/g++   -g -o CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o -c \"/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/importModel/model.cpp\"",
+  "file": "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/importModel/model.cpp"
 }
 ]

@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL Engine"
+CMAKE_SOURCE_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine"
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build"
+CMAKE_BINARY_DIR = "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build"
 
 # Include any dependencies generated for this target.
 include CMakeFiles/OpenGLEngine.dir/depend.make
@@ -72,62 +72,78 @@ include CMakeFiles/OpenGLEngine.dir/flags.make
 CMakeFiles/OpenGLEngine.dir/src/main.cpp.o: CMakeFiles/OpenGLEngine.dir/flags.make
 CMakeFiles/OpenGLEngine.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/OpenGLEngine.dir/src/main.cpp.o: CMakeFiles/OpenGLEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/OpenGLEngine.dir/src/main.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGLEngine.dir/src/main.cpp.o -MF CMakeFiles/OpenGLEngine.dir/src/main.cpp.o.d -o CMakeFiles/OpenGLEngine.dir/src/main.cpp.o -c "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/main.cpp"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/OpenGLEngine.dir/src/main.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGLEngine.dir/src/main.cpp.o -MF CMakeFiles/OpenGLEngine.dir/src/main.cpp.o.d -o CMakeFiles/OpenGLEngine.dir/src/main.cpp.o -c "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/main.cpp"
 
 CMakeFiles/OpenGLEngine.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/OpenGLEngine.dir/src/main.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/main.cpp" > CMakeFiles/OpenGLEngine.dir/src/main.cpp.i
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/main.cpp" > CMakeFiles/OpenGLEngine.dir/src/main.cpp.i
 
 CMakeFiles/OpenGLEngine.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/OpenGLEngine.dir/src/main.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/main.cpp" -o CMakeFiles/OpenGLEngine.dir/src/main.cpp.s
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/main.cpp" -o CMakeFiles/OpenGLEngine.dir/src/main.cpp.s
 
-CMakeFiles/OpenGLEngine.dir/src/glad.c.o: CMakeFiles/OpenGLEngine.dir/flags.make
-CMakeFiles/OpenGLEngine.dir/src/glad.c.o: ../src/glad.c
-CMakeFiles/OpenGLEngine.dir/src/glad.c.o: CMakeFiles/OpenGLEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/OpenGLEngine.dir/src/glad.c.o"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/OpenGLEngine.dir/src/glad.c.o -MF CMakeFiles/OpenGLEngine.dir/src/glad.c.o.d -o CMakeFiles/OpenGLEngine.dir/src/glad.c.o -c "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/glad.c"
+CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o: CMakeFiles/OpenGLEngine.dir/flags.make
+CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o: ../src/includes/glad/glad.c
+CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o: CMakeFiles/OpenGLEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -MD -MT CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o -MF CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o.d -o CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o -c "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/glad/glad.c"
 
-CMakeFiles/OpenGLEngine.dir/src/glad.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/OpenGLEngine.dir/src/glad.c.i"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/glad.c" > CMakeFiles/OpenGLEngine.dir/src/glad.c.i
+CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.i"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/glad/glad.c" > CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.i
 
-CMakeFiles/OpenGLEngine.dir/src/glad.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/OpenGLEngine.dir/src/glad.c.s"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/glad.c" -o CMakeFiles/OpenGLEngine.dir/src/glad.c.s
+CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.s"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/glad/glad.c" -o CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.s
 
-CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o: CMakeFiles/OpenGLEngine.dir/flags.make
-CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o: ../src/camera.cpp
-CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o: CMakeFiles/OpenGLEngine.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o -MF CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o.d -o CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o -c "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/camera.cpp"
+CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o: CMakeFiles/OpenGLEngine.dir/flags.make
+CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o: ../src/includes/camera/camera.cpp
+CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o: CMakeFiles/OpenGLEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o -MF CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o.d -o CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o -c "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/camera/camera.cpp"
 
-CMakeFiles/OpenGLEngine.dir/src/camera.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/OpenGLEngine.dir/src/camera.cpp.i"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/camera.cpp" > CMakeFiles/OpenGLEngine.dir/src/camera.cpp.i
+CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/camera/camera.cpp" > CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.i
 
-CMakeFiles/OpenGLEngine.dir/src/camera.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/OpenGLEngine.dir/src/camera.cpp.s"
-	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/src/camera.cpp" -o CMakeFiles/OpenGLEngine.dir/src/camera.cpp.s
+CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/camera/camera.cpp" -o CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.s
+
+CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o: CMakeFiles/OpenGLEngine.dir/flags.make
+CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o: ../src/includes/importModel/model.cpp
+CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o: CMakeFiles/OpenGLEngine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o -MF CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o.d -o CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o -c "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/importModel/model.cpp"
+
+CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.i"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/importModel/model.cpp" > CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.i
+
+CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.s"
+	/usr/bin/g++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/src/includes/importModel/model.cpp" -o CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.s
 
 # Object files for target OpenGLEngine
 OpenGLEngine_OBJECTS = \
 "CMakeFiles/OpenGLEngine.dir/src/main.cpp.o" \
-"CMakeFiles/OpenGLEngine.dir/src/glad.c.o" \
-"CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o"
+"CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o" \
+"CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o" \
+"CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o"
 
 # External object files for target OpenGLEngine
 OpenGLEngine_EXTERNAL_OBJECTS =
 
 OpenGLEngine: CMakeFiles/OpenGLEngine.dir/src/main.cpp.o
-OpenGLEngine: CMakeFiles/OpenGLEngine.dir/src/glad.c.o
-OpenGLEngine: CMakeFiles/OpenGLEngine.dir/src/camera.cpp.o
+OpenGLEngine: CMakeFiles/OpenGLEngine.dir/src/includes/glad/glad.c.o
+OpenGLEngine: CMakeFiles/OpenGLEngine.dir/src/includes/camera/camera.cpp.o
+OpenGLEngine: CMakeFiles/OpenGLEngine.dir/src/includes/importModel/model.cpp.o
 OpenGLEngine: CMakeFiles/OpenGLEngine.dir/build.make
 OpenGLEngine: /usr/lib/x86_64-linux-gnu/libGLX.so
 OpenGLEngine: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 OpenGLEngine: CMakeFiles/OpenGLEngine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX executable OpenGLEngine"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir="/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable OpenGLEngine"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/OpenGLEngine.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -139,6 +155,6 @@ CMakeFiles/OpenGLEngine.dir/clean:
 .PHONY : CMakeFiles/OpenGLEngine.dir/clean
 
 CMakeFiles/OpenGLEngine.dir/depend:
-	cd "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/jojocherri/Desktop/C++ projects/OpenGL Engine" "/home/jojocherri/Desktop/C++ projects/OpenGL Engine" "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build" "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build" "/home/jojocherri/Desktop/C++ projects/OpenGL Engine/build/CMakeFiles/OpenGLEngine.dir/DependInfo.cmake" --color=$(COLOR)
+	cd "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build" && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine" "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine" "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build" "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build" "/home/jojocherri/Desktop/C++ projects/OpenGL-Engine/build/CMakeFiles/OpenGLEngine.dir/DependInfo.cmake" --color=$(COLOR)
 .PHONY : CMakeFiles/OpenGLEngine.dir/depend
 

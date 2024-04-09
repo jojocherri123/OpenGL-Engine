@@ -3,7 +3,7 @@
 #include "camera.hpp"
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtx/rotate_vector.hpp>
-
+#include<glm/gtx/vector_angle.hpp>
 
 Camera::Camera(){
     mEye = glm::vec3(0.0f,0.0f,0.0f);
@@ -11,7 +11,6 @@ Camera::Camera(){
     // mViewUpDirection = glm::vec3(0.0f,-1.0f,0.0f);
 
     mUpVector = glm::vec3(0.0f,1.0f,0.0f);
-    mUpVector2 = glm::vec3(1.0f,0.0f,0.0f);
     glm::vec2 mOldMousePosition;
 }
 
@@ -32,11 +31,12 @@ void Camera::MouseLook(int mouseX, int mouseY){
 
     glm::vec2 mouseDelta = mOldMousePosition - currentMouse;
 
+
+    if (abs(glm::angle(mViewDirection, mUpVector) - glm::radians(90.0f)) <= glm::radians(85.0f))
+	{
+		mViewDirection = glm::rotate(mViewDirection, glm::radians(mouseDelta.y), glm::normalize(glm::cross(mViewDirection, mUpVector)));
+	}
     mViewDirection = glm::rotate(mViewDirection,glm::radians(mouseDelta.x),mUpVector);
-
-    mViewDirection = glm::rotate(mViewDirection,glm::radians(mouseDelta.y),mUpVector2);
-
-
 
     mOldMousePosition = currentMouse;
 }

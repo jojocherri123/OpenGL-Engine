@@ -1,16 +1,15 @@
 #version 460 core
-
 layout (triangles) in;
 layout (triangle_strip, max_vertices = 3) out;
 
 out vec3 normals;
 out vec3 crntPos;
-out vec2 texCoord;
+out vec2 texCoords;
 
 in DATA
 {
+    vec3 crntPos;
     vec3 normals;
-	vec3 crntPos;
     vec2 texCoords;
     mat4 projection;
 } data_in[];
