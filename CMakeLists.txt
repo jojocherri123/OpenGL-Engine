@@ -22,8 +22,6 @@ add_executable(OpenGLEngine
 
 target_link_libraries(OpenGLEngine
     SDL2
-    SDL2_image
-    glfw
     OpenGL::GL
     assimp
     stb

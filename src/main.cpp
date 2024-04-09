@@ -9,9 +9,7 @@
 #include <sstream>
 
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include "includes/glad/glad.h"
-#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
@@ -349,16 +347,16 @@ int main()
     InitializeProgram();
     stbi_set_flip_vertically_on_load(true);
     
-    backPack.loadModel("../src/content/objects/backpack/backpack.obj");
-    LightSource.loadModel("../src/content/objects/light.obj");
+    backPack.loadModel("./src/content/objects/backpack/backpack.obj");
+    LightSource.loadModel("./src/content/objects/light.obj");
 
-    shader.GraphicsPipeLine("../src/includes/shader/shaders/vertex.glsl",
-                            "../src/includes/shader/shaders/geometry.glsl",
-                            "../src/includes/shader/shaders/fragment.glsl" );
+    shader.GraphicsPipeLine("./src/includes/shader/shaders/vertex.glsl",
+                            "./src/includes/shader/shaders/geometry.glsl",
+                            "./src/includes/shader/shaders/fragment.glsl" );
 
-    Lightshader.GraphicsPipeLine("../src/includes/shader/shaders/light.vertex.glsl",
-                                "../src/includes/shader/shaders/light.geo.glsl",
-                                "../src/includes/shader/shaders/light.fragment.glsl");
+    Lightshader.GraphicsPipeLine("./src/includes/shader/shaders/light.vertex.glsl",
+                                "./src/includes/shader/shaders/light.geo.glsl",
+                                "./src/includes/shader/shaders/light.fragment.glsl");
 
     MainLoop();
     CleanUp();

@@ -12,7 +12,8 @@ uniform vec4 u_LightColor;
 uniform vec3 u_LightPosition;
 uniform vec3 u_CamPos;
 
-void main(){
+vec4 pointLight(){
+
 
     float ambient = 0.02f;
 
@@ -32,6 +33,12 @@ void main(){
 
     };
 
-    color = texture(texture_diffuse1,texCoords) *u_LightColor *(diffuse + ambient )+ texture(texture_specular1,texCoords) * specular;
+    return texture(texture_diffuse1,texCoords) *(diffuse + ambient )+ texture(texture_specular1,texCoords) * specular * u_LightColor;
+}
+
+void main(){
+
+
+    color = pointLight();
 
 }
