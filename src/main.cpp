@@ -53,7 +53,7 @@ Model backPack;
 
 
 glm::vec4 lightColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
-glm::vec3 lightPos = glm::vec3(1.0f,1.0f,-3.0f);
+glm::vec3 lightPos = glm::vec3(1.0f,1.0f,1.0f);
 Shader Lightshader;
 Model LightSource;
 

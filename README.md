@@ -15,3 +15,17 @@
 
 it is strictly still a WIP
 =
+
+lights
+=
+
+there are 3 types of lights currently
+- pointLight
+- directionalLight
+- spotlight
+
+all of which can be accesed currently through fragment.glsl shader 
+
+importing models
+=
+This engine currently supports .obj only, more to come in the future 
