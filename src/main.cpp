@@ -53,7 +53,7 @@ Model backPack;
 
 
 glm::vec4 lightColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
-glm::vec3 lightPos = glm::vec3(0.0f,0.0f,1.0f);
+glm::vec3 lightPos = glm::vec3(1.0f,1.0f,-3.0f);
 Shader Lightshader;
 Model LightSource;
 
@@ -142,15 +142,6 @@ void Input()
         if(e.type == SDL_MOUSEMOTION){
             mouseX += e.motion.xrel;
             mouseY += e.motion.yrel;
-            
-            // if (mouseY >= 70 and mouseY <= 270){
-            //     mouseY += e.motion.yrel;
-            // }else if (mouseY > 270){
-            //     mouseY -=1;
-            // }else if (mouseY < 70){
-            //     mouseY +=1;
-            // }
-
             gCamera.MouseLook(mouseX,mouseY);
         }
 

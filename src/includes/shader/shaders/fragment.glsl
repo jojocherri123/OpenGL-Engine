@@ -33,7 +33,7 @@ vec4 pointLight(){
 
     };
 
-    return texture(texture_diffuse1,texCoords) *(diffuse + ambient )+ texture(texture_specular1,texCoords) * specular * u_LightColor;
+    return texture(texture_diffuse1,texCoords)* u_LightColor *(diffuse + ambient )+ texture(texture_specular1,texCoords) * specular * u_LightColor;
 }
 
 void main(){
