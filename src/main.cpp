@@ -53,7 +53,21 @@ Model backPack;
 
 
 glm::vec4 lightColor = glm::vec4(1.0f,1.0f,1.0f,1.0f);
-glm::vec3 lightPos = glm::vec3(1.0f,1.0f,1.0f);
+
+//must edit numOfPointLight if increase or decrease number of coords
+glm::vec3 pointLightPositions[] = {
+        glm::vec3(0.0f, 3.0f, 0.0f),
+        glm::vec3(-3.0f,-3.0f,-3.0f)
+    };
+glm::vec3 directionalLightAngles[] = {
+        glm::vec3(0.0f, 10.0f, -10.0f),
+    };
+//must edit numOfSpotLight if increase or decrease number of coords
+glm::vec3 SpotLightPositions[] = {
+        glm::vec3(0.0f, 0.0f, 0.0f),
+        
+    };
+
 Shader Lightshader;
 Model LightSource;
 
@@ -148,6 +162,11 @@ void Input()
     }
         
     const Uint8 *state= SDL_GetKeyboardState(NULL);
+    if (state[SDL_SCANCODE_ESCAPE]){
+        std::cout << "Exited Succesfully" << std::endl;
+        Quit = true;
+    }
+    
     if (state[SDL_SCANCODE_W]){
         // g_uOffset+=0.01f;
         gCamera.MoveForward(0.1f);
@@ -193,71 +212,38 @@ void PreDraw()
     model = glm::rotate(model, glm::radians(g_uRotate), glm::vec3(0.0f,1.0f,0.0f));
     model = glm::scale(model, glm::vec3(1.0f,g_uScale,1.0f));
     
-    GLint u_ModelMatrix = glGetUniformLocation(shader.ID,"u_ModelMatrix");
-    
-    if (u_ModelMatrix>=0){
-        glUniformMatrix4fv(u_ModelMatrix,1,GL_FALSE,&model[0][0]);
-    }else{
-        std::cout << "error finding u_ModelMatrix, misspell?" << std::endl;
-        exit(1);
-    }
+
+    shader.SetMatrix4FV("u_ModelMatrix", model);
 
     glm::mat4 view = gCamera.getViewMatrix();
-
-    GLint u_ViewLocation = glGetUniformLocation(shader.ID,"u_ViewMatrix");
-    if (u_ViewLocation>=0){
-        glUniformMatrix4fv(u_ViewLocation,1,GL_FALSE,&view[0][0]);
-    }else{
-        std::cout << "error finding u_ViewMatrix, misspell?" << std::endl;
-        exit(1);
-    }
-    
+    shader.SetMatrix4FV("u_ViewMatrix", view);
 
     glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)SCRNWidth/(float)SCRNHeight,0.1f,100.0f);
-    
-    GLint u_PerspectionLocation = glGetUniformLocation(shader.ID,"u_Projection");
-    if (u_PerspectionLocation>=0){
-        glUniformMatrix4fv(u_PerspectionLocation,1,GL_FALSE,&perspective[0][0]);
-    }else{
-        std::cout << "error finding u_Perspective, misspell?" << std::endl;
-        exit(1);
-    }
+    shader.SetMatrix4FV("u_Projection", perspective);
 
-    GLint u_LightColor = glGetUniformLocation(shader.ID,"u_LightColor");
-    if (u_LightColor>=0){
-        glUniform4f(u_LightColor,lightColor.x,lightColor.y,lightColor.z,lightColor.w);
-    }else{
-        std::cout << "error finding u_LightColor, misspell?" << std::endl;
-        exit(1);
-    }
+    shader.SetFloat4("u_LightColor",lightColor.x,lightColor.y,lightColor.z,lightColor.w);
 
-    GLint u_LightPosition = glGetUniformLocation(shader.ID,"u_LightPosition");
-    if (u_LightPosition>=0){
-        glUniform3f(u_LightPosition,lightPos.x,lightPos.y,lightPos.z);
-    }else{
-        std::cout << "error finding lightPos, misspell?" << std::endl;
-        exit(1);
-    }
+    // shader.SetFloat3("u_LightPosition",lightPos.x,lightPos.y,lightPos.z);
+    shader.SetFloat3v("pointLights[0].position",pointLightPositions[0]);
+    shader.SetFloat3v("pointLights[1].position",pointLightPositions[1]);
+    shader.SetFloat3v("directionalLight[0].angle",directionalLightAngles[0]);
+    shader.SetFloat3v("spotLight[0].position",SpotLightPositions[0]);
+    shader.SetFloat3("spotLight[0].angle",0.0f,0.0f,-1.0f);
 
-    GLint u_CamPos = glGetUniformLocation(shader.ID,"u_CamPos");
-    if (u_CamPos>=0){
-        glUniform3f(u_CamPos,gCamera.mEye.x,gCamera.mEye.y,gCamera.mEye.z);
-    }else{
-        std::cout << "error finding u_CamPos, misspell?" << std::endl;
-        exit(1);
-    }
+    shader.SetFloat3("u_CamPos",gCamera.mEye.x,gCamera.mEye.y,gCamera.mEye.z);
 
+    shader.SetFloat("material.shininess", 32.0f);
 
 }
 
 void Draw()
 {   
-    
+
     glBindVertexArray(gVertexArrayObject);
     // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     
     backPack.Draw(shader);
-    
+
     glUseProgram(0);
 }
 
@@ -265,46 +251,43 @@ void Light(){
 
     Lightshader.use();
 
-    glm::mat4 model = glm::translate(glm::mat4(1.0f),lightPos);
+    int numOfPointLight = 2;
+    int numOfSpotLight = 1;
+    // shader.SetInt("numOfPointLight", numOfPointLight);
 
-    GLint u_ModelMatrixLight = glGetUniformLocation(Lightshader.ID,"u_ModelMatrixLight");
+    for (int i=0; i< numOfPointLight;i++){
 
-    if (u_ModelMatrixLight>=0){
-        glUniformMatrix4fv(u_ModelMatrixLight,1,GL_FALSE,&model[0][0]);
-    }else{
-        std::cout << "error finding u_ModelMatrixLight, misspell?" << std::endl;
-        exit(1);
-    }
+        glm::mat4 model = glm::translate(glm::mat4(1.0f),pointLightPositions[i]);
 
-    glm::mat4 view = gCamera.getViewMatrix();
+        Lightshader.SetMatrix4FV("u_ModelMatrixLight", model);
 
-    GLint u_ViewLocationLight = glGetUniformLocation(Lightshader.ID,"u_ViewMatrixLight");
-    if (u_ViewLocationLight>=0){
-        glUniformMatrix4fv(u_ViewLocationLight,1,GL_FALSE,&view[0][0]);
-    }else{
-        std::cout << "error finding u_ViewMatrixLight, misspell?" << std::endl;
-        exit(1);
-    }
+        glm::mat4 view = gCamera.getViewMatrix();
+        Lightshader.SetMatrix4FV("u_ViewMatrixLight", view);
 
-    glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)SCRNWidth/(float)SCRNHeight,0.1f,100.0f);
-    
-    GLint u_PerspectionLocation = glGetUniformLocation(Lightshader.ID,"u_ProjectionLight");
-    if (u_PerspectionLocation>=0){
-        glUniformMatrix4fv(u_PerspectionLocation,1,GL_FALSE,&perspective[0][0]);
-    }else{
-        std::cout << "error finding u_ProjectionLight, misspell?" << std::endl;
-        exit(1);
-    }
-    
-    GLint u_LightColor = glGetUniformLocation(Lightshader.ID,"u_LightColor");
-    if (u_LightColor>=0){
-        glUniform4f(u_LightColor,lightColor.x,lightColor.y,lightColor.z,lightColor.w);
-    }else{
-        std::cout << "error finding u_LightColor, misspell?" << std::endl;
-        exit(1);
-    }
+        glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)SCRNWidth/(float)SCRNHeight,0.1f,100.0f);
+        Lightshader.SetMatrix4FV("u_ProjectionLight", perspective);
+        
+        Lightshader.SetFloat4("u_LightColor",lightColor.x,lightColor.y,lightColor.z,lightColor.w);
+        
+        LightSource.Draw(Lightshader);
+    };
 
-    LightSource.Draw(Lightshader);
+    for (int i=0; i< numOfSpotLight;i++){
+
+        glm::mat4 model = glm::translate(glm::mat4(1.0f),SpotLightPositions[i]);
+
+        Lightshader.SetMatrix4FV("u_ModelMatrixLight", model);
+
+        glm::mat4 view = gCamera.getViewMatrix();
+        Lightshader.SetMatrix4FV("u_ViewMatrixLight", view);
+
+        glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)SCRNWidth/(float)SCRNHeight,0.1f,100.0f);
+        Lightshader.SetMatrix4FV("u_ProjectionLight", perspective);
+        
+        Lightshader.SetFloat4("u_LightColor",lightColor.x,lightColor.y,lightColor.z,lightColor.w);
+        
+        LightSource.Draw(Lightshader);
+    };
 }
 
 void MainLoop()

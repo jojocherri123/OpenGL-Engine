@@ -5,6 +5,9 @@
 #include <fstream>
 #include<iostream>
 
+#include <glm/mat4x4.hpp>
+
+
 #include "../glad/glad.h"
 
 class Shader{
@@ -13,8 +16,7 @@ class Shader{
 
         GLuint ID = 0;
 
-        void GraphicsPipeLine(const char* vertexPath, const char* geomPath, const char* fragmentPath)
-        {
+        void GraphicsPipeLine(const char* vertexPath, const char* geomPath, const char* fragmentPath){
 
             std::string VertexShaderSource = LoadShaderAsString(vertexPath);
             std::string GeometryShaderSource = LoadShaderAsString(geomPath);
@@ -30,6 +32,66 @@ class Shader{
 
         void deleteShader(){
             glDeleteShader(ID);
+        }
+
+        void SetFloat(const GLchar* uniform,float value){
+            GLint UNIFORM = glGetUniformLocation(ID,uniform);
+            if (UNIFORM>=0){
+                glUniform1f(UNIFORM,value);
+            }else{
+                std::cout << "error finding "<< uniform << " misspell?"<< std::endl;
+                exit(1);
+            }
+        }
+        
+        void SetInt(const GLchar* uniform,int value){
+            GLint UNIFORM = glGetUniformLocation(ID,uniform);
+            if (UNIFORM>=0){
+                glUniform1i(UNIFORM,value);
+            }else{
+                std::cout << "error finding "<< uniform << " misspell?"<< std::endl;
+                exit(1);
+            }
+        }
+
+        void SetFloat3(const GLchar* uniform, float value1, float value2, float value3){
+            GLint UNIFORM = glGetUniformLocation(ID,uniform);
+            if (UNIFORM>=0){
+                glUniform3f(UNIFORM,value1,value2,value3);
+            }else{
+                std::cout << "error finding "<< uniform << " misspell?"<< std::endl;
+                exit(1);
+            }
+        }
+
+        void SetFloat3v(const GLchar* uniform, glm::vec3 value1){
+            GLint UNIFORM = glGetUniformLocation(ID,uniform);
+            if (UNIFORM>=0){
+                glUniform3fv(UNIFORM,GL_TRUE,&value1[0]);
+            }else{
+                std::cout << "error finding "<< uniform << " misspell?"<< std::endl;
+                exit(1);
+            }
+        }
+
+        void SetFloat4(const GLchar* uniform, float value1, float value2, float value3, float value4){
+            GLint UNIFORM = glGetUniformLocation(ID,uniform);
+            if (UNIFORM>=0){
+                glUniform4f(UNIFORM,value1,value2,value3,value4);
+            }else{
+                std::cout << "error finding "<< uniform << " misspell?"<< std::endl;
+                exit(1);
+            }
+        }
+
+        void SetMatrix4FV(const GLchar* uniform, glm::mat4 value1){
+            GLint UNIFORM = glGetUniformLocation(ID,uniform);
+            if (UNIFORM>=0){
+                glUniformMatrix4fv(UNIFORM,1,GL_FALSE,&value1[0][0]);
+            }else{
+                std::cout << "error finding "<< uniform << " misspell?"<< std::endl;
+                exit(1);
+            }
         }
 
     private:
