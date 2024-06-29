@@ -1,5 +1,6 @@
 ###### This is my attempt at making an OpenGL engine with C++
 
+press M to free and unfree camera
 
 #### libraries required:
 - SDL2
