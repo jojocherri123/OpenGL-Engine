@@ -5,6 +5,8 @@ press M to free and unfree camera
 #### libraries required:
 - SDL2
   - sudo apt install libsdl2-dev
+- SDL2 image
+  - sudo apt install libsdl2-image-dev
 - glm
   - sudo apt install libglm-dev
 - assimp
