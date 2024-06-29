@@ -58,6 +58,7 @@ struct DirectionalLight {
     vec3 angle;
     vec4 color;
 };
+
 const int NR_DIR_LIGHTS = 1;
 uniform DirectionalLight directionalLight[NR_DIR_LIGHTS];
 
@@ -126,6 +127,25 @@ vec4 calcSpotLight(SpotLight light,vec3 normalVar, vec3 crntPosVar, vec3 viewDir
 	return (texture(texture_diffuse1, texCoords) * (diffuse *intensity *inten + ambient) + texture(texture_specular1, texCoords).r * specular * intensity*inten) * u_LightColor;
 }
 
+
+float near = 0.1f;
+float far = 100.0f;
+
+uniform float FogDensity;
+uniform vec3 FogColor;
+
+float linearizeDepth(float depth)
+{
+	return (FogDensity * near * far) / (far + near - (depth * 2.0 - 1.0) * (far - near));
+}
+
+float logisticDepth(float depth, float steepness = 0.5f, float offset = 5.0f)
+{
+	float zVal = linearizeDepth(depth);
+	return (1 / (1 + exp(-steepness * (zVal - offset))));
+}
+
+
 void main(){
 
     vec4 result = vec4(0.0);
@@ -143,5 +163,14 @@ void main(){
         result += calcSpotLight(spotLight[i],normals, crntPos, viewDirection);
     }
 
-    color = result;
+
+    float depth = logisticDepth(gl_FragCoord.z);
+    color = result * (1.0f - depth) + vec4(depth * FogColor, 1.0f);
+    
+    if(color.a < 0.01) {
+    discard;
+    }
+
+    // color = vec4(vec3(gl_FragCoord.z),1.0);
+
 }
