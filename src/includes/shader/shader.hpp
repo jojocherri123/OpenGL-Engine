@@ -94,6 +94,16 @@ class Shader{
             }
         }
 
+        void Set1i(const GLchar* uniform, int value1){
+            GLint UNIFORM = glGetUniformLocation(ID,uniform);
+            if (UNIFORM>=0){
+                glUniform1i(UNIFORM,value1);
+            }else{
+                std::cout << "error finding "<< uniform << " misspell?"<< std::endl;
+                exit(1);
+            }
+        }
+
     private:
 
         std::string LoadShaderAsString(const std::string& filename)

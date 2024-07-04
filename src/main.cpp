@@ -35,11 +35,26 @@ class WindowMain{
         SDL_GLContext OpenGLContext;
         SDL_Surface* iconSurface = IMG_Load("./src/content/icons/icon.png");
         
-        
         bool Quit = false;
+
+        unsigned int fbo;
+        unsigned int frameBufferTexture;
+        unsigned int rbo;
+        unsigned int rectVAO, rectVBO;
+        
 };
 WindowMain windowMain;
 
+float rectangleVertices[] = {
+        // positions   // texCoords
+        -1.0f,  1.0f,  0.0f, 1.0f,
+        -1.0f, -1.0f,  0.0f, 0.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+
+        -1.0f,  1.0f,  0.0f, 1.0f,
+         1.0f, -1.0f,  1.0f, 0.0f,
+         1.0f,  1.0f,  1.0f, 1.0f
+    };
 
 class LightSettings{
     
@@ -76,6 +91,7 @@ Model backPack;
 EngineGUI engineGui;
 Shader Lightshader;
 Model LightSource;
+Shader frameBufferShader;
 
 float FogDensity;
 glm::vec3 FogColor;
@@ -121,6 +137,9 @@ void InitializeProgram()
 
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
 
    windowMain.GraphicsWinow = SDL_CreateWindow("Shade Line Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                                 windowMain.SCRNWidth,windowMain.SCRNHeight,
@@ -217,19 +236,21 @@ void Input()
 void PreDraw()
 {
 
+    
+
+    glViewport(0, 0, windowMain.SCRNWidth, windowMain.SCRNHeight);
+    glBindFramebuffer(GL_FRAMEBUFFER, windowMain.fbo);
+    glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
-    
+    glEnable(GL_MULTISAMPLE);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-
-    glViewport(0, 0, windowMain.SCRNWidth, windowMain.SCRNHeight);
-    glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-
-    glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-
+    // glEnable(GL_FRAMEBUFFER_SRGB); 
 
     shader.use();
 
@@ -319,7 +340,7 @@ void Light(){
     };
 }
 
-void MainLoop(){   
+void MainLoop(){
     
 
     SDL_WarpMouseInWindow(windowMain.GraphicsWinow, windowMain.SCRNWidth/2, windowMain.SCRNHeight/2);
@@ -334,9 +355,22 @@ void MainLoop(){
         Draw();
         Light();
 
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		// Draw the framebuffer rectangle
+
+        int gamma = 2.2f;
+
+		frameBufferShader.use();
+        frameBufferShader.Set1i("screenTexture",0);
+        frameBufferShader.SetFloat("gamma",gamma);
+		glBindVertexArray(windowMain.rectVAO);
+		glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
+		glBindTexture(GL_TEXTURE_2D, windowMain.frameBufferTexture);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
         ImGui::ShowDemoWindow();
 
-        engineGui.GUIconfigWindow(FogDensity, 
+        engineGui.GUIwindows(FogDensity, 
                                 FogColor, 
                                 lightSettings.lightColor, 
                                 lightSettings.pointLightPositions, 
@@ -344,11 +378,6 @@ void MainLoop(){
                                 lightSettings.SpotLightAngles, 
                                 lightSettings.directionalLightAngles);
 
-        engineGui.Objects(lightSettings.lightColor, 
-                            lightSettings.pointLightPositions, 
-                            lightSettings.SpotLightPositions, 
-                            lightSettings.SpotLightAngles, 
-                            lightSettings.directionalLightAngles);
 
         engineGui.GUIrender();
 
@@ -361,8 +390,43 @@ void CleanUp()
     engineGui.cleanGUI();
     shader.deleteShader();
     Lightshader.deleteShader();
+    frameBufferShader.deleteShader();
     SDL_DestroyWindow(windowMain.GraphicsWinow);
     SDL_Quit();
+}
+
+void frameBuffer(){
+    glGenVertexArrays(1, &windowMain.rectVAO);
+	glGenBuffers(1, &windowMain.rectVBO);
+	glBindVertexArray(windowMain.rectVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, windowMain.rectVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(rectangleVertices), &rectangleVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    
+    glGenFramebuffers(1, &windowMain.fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER,windowMain.fbo);
+
+    glGenTextures(1, &windowMain.frameBufferTexture);
+    glBindTexture(GL_TEXTURE_2D, windowMain.frameBufferTexture);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, windowMain.SCRNWidth, windowMain.SCRNHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, windowMain.frameBufferTexture, 0);
+    
+    glGenRenderbuffers(1, &windowMain.rbo);
+    glBindRenderbuffer(GL_RENDERBUFFER, windowMain.rbo);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, windowMain.SCRNWidth, windowMain.SCRNHeight);
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, windowMain.rbo);
+
+    auto fboStatus =glCheckFramebufferStatus(GL_FRAMEBUFFER);
+    if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
+        cout << "ERROR::FRAMEBUFFER:: "<< fboStatus << endl;
+
 }
 
 int main()
@@ -371,6 +435,7 @@ int main()
     InitializeProgram();
 
 
+    frameBuffer();
     // stbi_set_flip_vertically_on_load(true);
     
     backPack.loadModel("./src/content/objects/sponza-scene/source/sponza/sponza.obj");
@@ -384,8 +449,12 @@ int main()
                                 "./src/includes/shader/shaders/light.geo.glsl",
                                 "./src/includes/shader/shaders/light.fragment.glsl");
 
-    engineGui.setupGUI(windowMain.GraphicsWinow, windowMain.OpenGLContext);
+    frameBufferShader.GraphicsPipeLine("./src/includes/shader/shaders/fbo.vertex.glsl",
+                                "./src/includes/shader/shaders/fbo.geo.glsl",
+                                "./src/includes/shader/shaders/fbo.fragment.glsl");
 
+    engineGui.setupGUI(windowMain.GraphicsWinow, windowMain.OpenGLContext);
+    
     MainLoop();
     CleanUp();
     return 0;

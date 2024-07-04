@@ -18,11 +18,7 @@ void EngineGUI::GUISetupDrawWindow(){
     ImGui::NewFrame();
 }
 
-
-static int selected = 0;
-
-
-void EngineGUI::GUIconfigWindow(float &fogDensity, 
+void EngineGUI::GUIwindows(float &fogDensity, 
                                 glm::vec3 &fogColor, 
                                 glm::vec4 &lightColor, 
                                 std::vector<glm::vec3> &pointLightPositions, 
@@ -30,9 +26,11 @@ void EngineGUI::GUIconfigWindow(float &fogDensity,
                                 std::vector<glm::vec3> &spotLightAngles, 
                                 std::vector<glm::vec3> &directionalLightAngles){
     
-    
+    static int selected = 0;
+
+    // configuration window
+
     ImGui::Begin("Configuration");
-    
 
     ImGui::SeparatorText("General");
         ImGui::Text("Fog");
@@ -69,14 +67,8 @@ void EngineGUI::GUIconfigWindow(float &fogDensity,
         }
 
     ImGui::End();
-}
 
-void EngineGUI::Objects(glm::vec4 &lightColor, 
-                        std::vector<glm::vec3> &pointLightPositions, 
-                        std::vector<glm::vec3> &spotLightPositions, 
-                        std::vector<glm::vec3> &spotLightAngles, 
-                        std::vector<glm::vec3> &directionalLightAngles){
-
+    // objects window
     ImGui::Begin("Objects");
 
     ImGui::Separator();
@@ -91,9 +83,7 @@ void EngineGUI::Objects(glm::vec4 &lightColor,
     ImGui::EndChild();
 
     ImGui::End();
-
-    
-};
+}
 
 void EngineGUI::GUIrender(){
     ImGui::Render();

@@ -17,7 +17,7 @@ class EngineGUI{
 
         void GUIevent(SDL_Event event);
         void GUISetupDrawWindow();
-        void GUIconfigWindow(float &fogDensity, 
+        void GUIwindows(float &fogDensity, 
                             glm::vec3 &fogColor, 
                             glm::vec4 &lightColor, 
                             std::vector<glm::vec3> &pointLightPositions, 
@@ -25,12 +25,6 @@ class EngineGUI{
                             std::vector<glm::vec3> &spotLightAngles, 
                             std::vector<glm::vec3> &directionalLightAngles);
 
-        void Objects(glm::vec4 &lightColor, 
-                        std::vector<glm::vec3> &pointLightPositions, 
-                        std::vector<glm::vec3> &spotLightPositions, 
-                        std::vector<glm::vec3> &spotLightAngles, 
-                        std::vector<glm::vec3> &directionalLightAngles);
-                        
         void GUIrender();
 
         void cleanGUI();

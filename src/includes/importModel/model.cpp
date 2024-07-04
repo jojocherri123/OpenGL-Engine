@@ -32,15 +32,22 @@ GLuint TextureFromFile(const char *path, const string &directory, bool gamma)
     if (data)
     {
         GLenum format;
-        if (nrComponents == 1)
+        GLenum format2;
+        if (nrComponents == 1){
             format = GL_RED;
-        else if (nrComponents == 3)
-            format = GL_RGB;
-        else if (nrComponents == 4)
-            format = GL_RGBA;
+            format2 = GL_RED;
+        }
+        else if (nrComponents == 3){
+            format = GL_SRGB;
+            format2 = GL_RGB;
+        }
+        else if (nrComponents == 4){
+            format = GL_SRGB_ALPHA;
+            format2 = GL_RGBA;
+        }
 
         glBindTexture(GL_TEXTURE_2D, textureID);
-        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format2, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

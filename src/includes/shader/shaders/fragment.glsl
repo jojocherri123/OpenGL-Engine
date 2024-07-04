@@ -51,6 +51,10 @@ vec4 calcPointLight(PointLight light,vec3 normalVar, vec3 crntPosVar, vec3 viewD
 
     };
 
+    if (texture(texture_diffuse1,texCoords).a < 0.1){
+        discard;
+    }
+
     return (texture(texture_diffuse1,texCoords)*(diffuse * inten + ambient )+ texture(texture_specular1,texCoords).r * specular * inten)* u_LightColor;
 };
 
@@ -81,6 +85,11 @@ vec4 calcDirectionalLight(DirectionalLight light,vec3 normalVar, vec3 viewDirect
         specular = specularAmount * specularLight;
 
     };
+
+    if (texture(texture_diffuse1,texCoords).a < 0.1){
+        discard;
+    }
+
 
     return (texture(texture_diffuse1,texCoords)*(diffuse + ambient )+ texture(texture_specular1,texCoords).r * specular)* u_LightColor;
 };
@@ -124,6 +133,11 @@ vec4 calcSpotLight(SpotLight light,vec3 normalVar, vec3 crntPosVar, vec3 viewDir
 	float angle = dot(light.angle, -lightDirection);
 	float inten = clamp((angle - outerCone) / (innerCone - outerCone), 0.0f, 1.0f);
 
+    if (texture(texture_diffuse1,texCoords).a < 0.1){
+        discard;
+    }
+
+
 	return (texture(texture_diffuse1, texCoords) * (diffuse *intensity *inten + ambient) + texture(texture_specular1, texCoords).r * specular * intensity*inten) * u_LightColor;
 }
 
@@ -166,10 +180,8 @@ void main(){
 
     float depth = logisticDepth(gl_FragCoord.z);
     color = result * (1.0f - depth) + vec4(depth * FogColor, 1.0f);
+
     
-    if(color.a < 0.01) {
-    discard;
-    }
 
     // color = vec4(vec3(gl_FragCoord.z),1.0);
 
