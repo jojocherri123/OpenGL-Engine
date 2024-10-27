@@ -25,36 +25,7 @@
 #include "includes/importModel/model.hpp"
 #include "includes/shader/shader.hpp"
 #include "includes/gui/gui.hpp"
-
-class WindowMain{
-    public:
-        int SCRNWidth = 1280;
-        int SCRNHeight = 720;
-
-        SDL_Window* GraphicsWinow;
-        SDL_GLContext OpenGLContext;
-        SDL_Surface* iconSurface = IMG_Load("./src/content/icons/icon.png");
-        
-        bool Quit = false;
-
-        unsigned int fbo;
-        unsigned int frameBufferTexture;
-        unsigned int rbo;
-        unsigned int rectVAO, rectVBO;
-        
-};
-WindowMain windowMain;
-
-float rectangleVertices[] = {
-        // positions   // texCoords
-        -1.0f,  1.0f,  0.0f, 1.0f,
-        -1.0f, -1.0f,  0.0f, 0.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-
-        -1.0f,  1.0f,  0.0f, 1.0f,
-         1.0f, -1.0f,  1.0f, 0.0f,
-         1.0f,  1.0f,  1.0f, 1.0f
-    };
+#include "includes/window/window.hpp"
 
 class LightSettings{
     
@@ -83,7 +54,7 @@ class LightSettings{
 };
 LightSettings lightSettings;
 
-
+WindowMain windowMain;
 Camera gCamera;
 GLuint gtexture;
 Shader shader;
@@ -229,6 +200,12 @@ void Input()
         if (state[SDL_SCANCODE_A]){
             gCamera.MoveRight(0.1f);
         }
+        if (state[SDL_SCANCODE_E]){
+            gCamera.MoveUp(0.1f);
+        }
+        if (state[SDL_SCANCODE_Q]){
+            gCamera.MoveDown(0.1f);
+        }
     }
 }
 
@@ -264,7 +241,7 @@ void PreDraw()
     glm::mat4 view = gCamera.getViewMatrix();
     shader.SetMatrix4FV("u_ViewMatrix", view);
 
-    glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)windowMain.SCRNWidth/(float)windowMain.SCRNHeight,0.1f,1000.0f);
+    glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth/(float)windowMain.SCRNHeight,0.1f,1000.0f);
     shader.SetMatrix4FV("u_Projection", perspective);
 
     shader.SetFloat4("u_LightColor",lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
@@ -313,7 +290,7 @@ void Light(){
         glm::mat4 view = gCamera.getViewMatrix();
         Lightshader.SetMatrix4FV("u_ViewMatrixLight", view);
 
-        glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)windowMain.SCRNWidth/(float)windowMain.SCRNHeight,0.1f,1000.0f);
+        glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth/(float)windowMain.SCRNHeight,0.1f,1000.0f);
         Lightshader.SetMatrix4FV("u_ProjectionLight", perspective);
         
         Lightshader.SetFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
@@ -331,7 +308,7 @@ void Light(){
         glm::mat4 view = gCamera.getViewMatrix();
         Lightshader.SetMatrix4FV("u_ViewMatrixLight", view);
 
-        glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)windowMain.SCRNWidth/(float)windowMain.SCRNHeight,0.1f,1000.0f);
+        glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth/(float)windowMain.SCRNHeight,0.1f,1000.0f);
         Lightshader.SetMatrix4FV("u_ProjectionLight", perspective);
         
         Lightshader.SetFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
@@ -358,7 +335,7 @@ void MainLoop(){
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		// Draw the framebuffer rectangle
 
-        int gamma = 2.2f;
+        static float gamma = 2.2f;
 
 		frameBufferShader.use();
         frameBufferShader.Set1i("screenTexture",0);
@@ -376,7 +353,8 @@ void MainLoop(){
                                 lightSettings.pointLightPositions, 
                                 lightSettings.SpotLightPositions, 
                                 lightSettings.SpotLightAngles, 
-                                lightSettings.directionalLightAngles);
+                                lightSettings.directionalLightAngles
+                                );
 
 
         engineGui.GUIrender();
@@ -396,6 +374,18 @@ void CleanUp()
 }
 
 void frameBuffer(){
+
+    float rectangleVertices[] = {
+            // positions   // texCoords
+            -1.0f,  1.0f,  0.0f, 1.0f,
+            -1.0f, -1.0f,  0.0f, 0.0f,
+            1.0f, -1.0f,  1.0f, 0.0f,
+
+            -1.0f,  1.0f,  0.0f, 1.0f,
+            1.0f, -1.0f,  1.0f, 0.0f,
+            1.0f,  1.0f,  1.0f, 1.0f
+    };
+
     glGenVertexArrays(1, &windowMain.rectVAO);
 	glGenBuffers(1, &windowMain.rectVBO);
 	glBindVertexArray(windowMain.rectVAO);
