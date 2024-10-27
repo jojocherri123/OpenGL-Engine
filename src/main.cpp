@@ -131,7 +131,7 @@ void Input()
     SDL_Event e;
     while (SDL_PollEvent(&e) != 0)
     {
-        engineGui.GUIevent(e);
+        engineGui.processEvent(e);
 
         if (e.type == SDL_KEYDOWN)
         {
@@ -312,7 +312,7 @@ void MainLoop()
         Input();
         PreDraw();
 
-        engineGui.GUISetupDrawWindow();
+        engineGui.setupDrawWindow();
 
         Draw();
         Light();
@@ -332,9 +332,9 @@ void MainLoop()
 
         ImGui::ShowDemoWindow();
 
-        engineGui.GUIwindows(FogDensity, FogColor, lightSettings);
+        engineGui.createMenus(FogDensity, FogColor, lightSettings);
 
-        engineGui.GUIrender();
+        engineGui.render();
 
         SDL_GL_SwapWindow(windowMain.GraphicsWinow);
     }
@@ -342,7 +342,7 @@ void MainLoop()
 
 void CleanUp()
 {
-    engineGui.cleanGUI();
+    engineGui.clean();
     shader.deleteShader();
     Lightshader.deleteShader();
     frameBufferShader.deleteShader();
@@ -418,7 +418,7 @@ int main()
                            "./src/includes/shader/shaders/fbo.geo.glsl",
                            "./src/includes/shader/shaders/fbo.fragment.glsl");
 
-    engineGui.setupGUI(windowMain.GraphicsWinow, windowMain.OpenGLContext);
+    engineGui.setup(*windowMain.GraphicsWinow, windowMain.OpenGLContext);
 
     MainLoop();
     CleanUp();

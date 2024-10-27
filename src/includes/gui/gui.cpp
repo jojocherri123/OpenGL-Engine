@@ -1,7 +1,7 @@
 #include "gui.hpp"
 #include "../light/lightsettings.hpp"
 
-void EngineGUI::setupGUI(SDL_Window *window, SDL_GLContext opengl)
+void EngineGUI::setup(SDL_Window &window, SDL_GLContext &opengl)
 {
 
     IMGUI_CHECKVERSION();
@@ -9,20 +9,20 @@ void EngineGUI::setupGUI(SDL_Window *window, SDL_GLContext opengl)
     ImGuiIO &io = ImGui::GetIO();
     (void)io;
     ImGui::StyleColorsDark();
-    ImGui_ImplSDL2_InitForOpenGL(window, opengl);
+    ImGui_ImplSDL2_InitForOpenGL(&window, opengl);
     ImGui_ImplOpenGL3_Init("#version 460");
 }
 
-void EngineGUI::GUISetupDrawWindow()
+void EngineGUI::setupDrawWindow()
 {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplSDL2_NewFrame();
     ImGui::NewFrame();
 }
 
-void EngineGUI::GUIwindows(float &fogDensity,
-                           glm::vec3 &fogColor,
-                           LightSettings &lightSettings)
+void EngineGUI::createMenus(float &fogDensity,
+                            glm::vec3 &fogColor,
+                            LightSettings &lightSettings)
 {
 
     static int selected = 0;
@@ -87,18 +87,18 @@ void EngineGUI::GUIwindows(float &fogDensity,
     ImGui::End();
 }
 
-void EngineGUI::GUIrender()
+void EngineGUI::render()
 {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
 
-void EngineGUI::GUIevent(SDL_Event event)
+void EngineGUI::processEvent(SDL_Event &event)
 {
     ImGui_ImplSDL2_ProcessEvent(&event);
 }
 
-void EngineGUI::cleanGUI()
+void EngineGUI::clean()
 {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL2_Shutdown();

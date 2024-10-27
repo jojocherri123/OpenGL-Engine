@@ -15,15 +15,12 @@ class EngineGUI
 {
 
 public:
-    void setupGUI(SDL_Window *window, SDL_GLContext opengl);
-
-    void GUIevent(SDL_Event event);
-    void GUISetupDrawWindow();
-    void GUIwindows(float &fogDensity,
-                    glm::vec3 &fogColor,
-                    LightSettings &lightSettings);
-
-    void GUIrender();
-
-    void cleanGUI();
+    void setup(SDL_Window &window, SDL_GLContext &opengl);
+    void processEvent(SDL_Event &event);
+    void setupDrawWindow();
+    void createMenus(float &fogDensity,
+                     glm::vec3 &fogColor,
+                     LightSettings &lightSettings);
+    void render();
+    void clean();
 };
