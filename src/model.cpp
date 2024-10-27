@@ -1,4 +1,3 @@
-#include "../glad/glad.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <SDL2/SDL.h>
@@ -9,6 +8,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include <stb/stb_image.h>
 
+#include "../glad/glad.h"
 #include "model.hpp"
 
 void Model::Draw(Shader &shader)

@@ -1,7 +1,7 @@
 #ifndef MODEL_HPP
 #define MODEL_HPP
 
-#include "../glad/glad.h"
+#include <glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <SDL2/SDL.h>
@@ -10,7 +10,7 @@
 #include <assimp/postprocess.h>
 
 #include "mesh.hpp"
-#include "../shader/shader.hpp"
+#include "shader.hpp"
 
 #include <string>
 #include <fstream>

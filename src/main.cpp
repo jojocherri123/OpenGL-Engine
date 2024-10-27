@@ -8,12 +8,12 @@
 #include <cassert>
 #include <sstream>
 
-#include "includes/imgui/imgui.h"
-#include "includes/imgui/backends/imgui_impl_sdl2.h"
-#include "includes/imgui/backends/imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <backends/imgui_impl_sdl2.h>
+#include <backends/imgui_impl_opengl3.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include "includes/glad/glad.h"
+#include <glad.h>
 #include <glm/glm.hpp>
 #include <glm/vec3.hpp>
 #include <glm/mat4x4.hpp>
@@ -21,12 +21,12 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <stb/stb_image.h>
 
-#include "includes/camera/camera.hpp"
-#include "includes/importModel/model.hpp"
-#include "includes/shader/shader.hpp"
-#include "includes/gui/gui.hpp"
-#include "includes/window/window.hpp"
-#include "includes/light/lightsettings.hpp"
+#include "camera.hpp"
+#include "model.hpp"
+#include "shader.hpp"
+#include "gui.hpp"
+#include "window.hpp"
+#include "lightsettings.hpp"
 
 LightSettings lightSettings;
 WindowMain windowMain;
@@ -403,20 +403,20 @@ int main()
     frameBuffer();
     // stbi_set_flip_vertically_on_load(true);
 
-    backPack.loadModel("./src/content/objects/sponza-scene/source/sponza/sponza.obj");
-    LightSource.loadModel("./src/content/objects/light.obj");
+    backPack.loadModel("./assets/objects/sponza-scene/source/sponza/sponza.obj");
+    LightSource.loadModel("./assets/objects/light.obj");
 
-    shader.init("./src/includes/shader/shaders/vertex.glsl",
-                "./src/includes/shader/shaders/geometry.glsl",
-                "./src/includes/shader/shaders/fragment.glsl");
+    shader.init("./shaders/vertex.glsl",
+                "./shaders/geometry.glsl",
+                "./shaders/fragment.glsl");
 
-    Lightshader.init("./src/includes/shader/shaders/light.vertex.glsl",
-                     "./src/includes/shader/shaders/light.geo.glsl",
-                     "./src/includes/shader/shaders/light.fragment.glsl");
+    Lightshader.init("./shaders/light.vertex.glsl",
+                     "./shaders/light.geo.glsl",
+                     "./shaders/light.fragment.glsl");
 
-    frameBufferShader.init("./src/includes/shader/shaders/fbo.vertex.glsl",
-                           "./src/includes/shader/shaders/fbo.geo.glsl",
-                           "./src/includes/shader/shaders/fbo.fragment.glsl");
+    frameBufferShader.init("./shaders/fbo.vertex.glsl",
+                           "./shaders/fbo.geo.glsl",
+                           "./shaders/fbo.fragment.glsl");
 
     engineGui.setup(*windowMain.GraphicsWinow, windowMain.OpenGLContext);
 

@@ -12,7 +12,7 @@ public:
 
     SDL_Window *GraphicsWinow;
     SDL_GLContext OpenGLContext;
-    SDL_Surface *iconSurface = IMG_Load("./src/content/icons/icon.png");
+    SDL_Surface *iconSurface = IMG_Load("./assets/icons/icon.png");
 
     bool Quit = false;
 

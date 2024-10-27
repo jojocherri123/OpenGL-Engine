@@ -1,5 +1,5 @@
 #include "gui.hpp"
-#include "../light/lightsettings.hpp"
+#include "lightsettings.hpp"
 
 void EngineGUI::setup(SDL_Window &window, SDL_GLContext &opengl)
 {
