@@ -11,13 +11,11 @@
 
 #include "model.hpp"
 
-
-
-void Model::Draw(Shader &shader){
-    for(int i = 0; i < meshes.size(); i++)
-            meshes[i].Draw(shader);
+void Model::Draw(Shader &shader)
+{
+    for (int i = 0; i < meshes.size(); i++)
+        meshes[i].Draw(shader);
 }
-
 
 GLuint TextureFromFile(const char *path, const string &directory, bool gamma)
 {
@@ -33,15 +31,18 @@ GLuint TextureFromFile(const char *path, const string &directory, bool gamma)
     {
         GLenum format;
         GLenum format2;
-        if (nrComponents == 1){
+        if (nrComponents == 1)
+        {
             format = GL_RED;
             format2 = GL_RED;
         }
-        else if (nrComponents == 3){
+        else if (nrComponents == 3)
+        {
             format = GL_SRGB;
             format2 = GL_RGB;
         }
-        else if (nrComponents == 4){
+        else if (nrComponents == 4)
+        {
             format = GL_SRGB_ALPHA;
             format2 = GL_RGBA;
         }

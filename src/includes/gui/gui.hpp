@@ -9,27 +9,25 @@
 #include <SDL2/SDL.h>
 #include <vector>
 
-class EngineGUI{
+class EngineGUI
+{
 
-    public:
-        
-        void setupGUI(SDL_Window *window, SDL_GLContext opengl);
+public:
+    void setupGUI(SDL_Window *window, SDL_GLContext opengl);
 
-        void GUIevent(SDL_Event event);
-        void GUISetupDrawWindow();
-        void GUIwindows(float &fogDensity, 
-                            glm::vec3 &fogColor, 
-                            glm::vec4 &lightColor, 
-                            std::vector<glm::vec3> &pointLightPositions, 
-                            std::vector<glm::vec3> &spotLightPositions, 
-                            std::vector<glm::vec3> &spotLightAngles, 
-                            std::vector<glm::vec3> &directionalLightAngles);
+    void GUIevent(SDL_Event event);
+    void GUISetupDrawWindow();
+    void GUIwindows(float &fogDensity,
+                    glm::vec3 &fogColor,
+                    glm::vec4 &lightColor,
+                    std::vector<glm::vec3> &pointLightPositions,
+                    std::vector<glm::vec3> &spotLightPositions,
+                    std::vector<glm::vec3> &spotLightAngles,
+                    std::vector<glm::vec3> &directionalLightAngles);
 
-        void GUIrender();
+    void GUIrender();
 
-        void cleanGUI();
-
-
+    void cleanGUI();
 };
 
 #endif
