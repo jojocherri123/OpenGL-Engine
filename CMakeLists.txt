@@ -35,6 +35,7 @@ add_executable(OpenGLEngine
     src/includes/importModel/model.cpp
 
     src/includes/shader/shader.hpp
+    src/includes/shader/shader.cpp
     
     )
 

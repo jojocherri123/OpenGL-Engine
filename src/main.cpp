@@ -245,27 +245,27 @@ void PreDraw()
     // model = glm::rotate(model, glm::radians(g_uRotate), glm::vec3(0.0f,0.0f,0.0f));
     model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
 
-    shader.SetMatrix4FV("u_ModelMatrix", model);
+    shader.setMatrix4FV("u_ModelMatrix", model);
 
     glm::mat4 view = gCamera.getViewMatrix();
-    shader.SetMatrix4FV("u_ViewMatrix", view);
+    shader.setMatrix4FV("u_ViewMatrix", view);
 
     glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
-    shader.SetMatrix4FV("u_Projection", perspective);
+    shader.setMatrix4FV("u_Projection", perspective);
 
-    shader.SetFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
+    shader.setFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
 
-    shader.SetFloat3v("pointLights[0].position", lightSettings.pointLightPositions[0]);
-    shader.SetFloat3v("pointLights[1].position", lightSettings.pointLightPositions[1]);
-    shader.SetFloat3v("directionalLight[0].angle", lightSettings.directionalLightAngles[0]);
-    shader.SetFloat3v("spotLight[0].position", lightSettings.SpotLightPositions[0]);
-    shader.SetFloat3v("spotLight[0].angle", lightSettings.SpotLightAngles[0]);
-    shader.SetFloat("FogDensity", FogDensity);
-    shader.SetFloat3v("FogColor", FogColor);
+    shader.setFloat3v("pointLights[0].position", lightSettings.pointLightPositions[0]);
+    shader.setFloat3v("pointLights[1].position", lightSettings.pointLightPositions[1]);
+    shader.setFloat3v("directionalLight[0].angle", lightSettings.directionalLightAngles[0]);
+    shader.setFloat3v("spotLight[0].position", lightSettings.SpotLightPositions[0]);
+    shader.setFloat3v("spotLight[0].angle", lightSettings.SpotLightAngles[0]);
+    shader.setFloat("FogDensity", FogDensity);
+    shader.setFloat3v("FogColor", FogColor);
 
-    shader.SetFloat3("u_CamPos", gCamera.mEye.x, gCamera.mEye.y, gCamera.mEye.z);
+    shader.setFloat3("u_CamPos", gCamera.mEye.x, gCamera.mEye.y, gCamera.mEye.z);
 
-    shader.SetFloat("material.shininess", 8.0f);
+    shader.setFloat("material.shininess", 8.0f);
 }
 
 void Draw()
@@ -284,9 +284,9 @@ void Light()
 
     int numOfPointLight = lightSettings.pointLightPositions.size();
     int numOfSpotLight = lightSettings.SpotLightPositions.size();
-    // shader.SetInt("numOfPointLight", numOfPointLight);
-    // shader.SetInt("NR_POINT_LIGHTS", numOfPointLight);
-    // shader.SetInt("NR_SPT_LIGHTS", numOfSpotLight);
+    // shader.setInt("numOfPointLight", numOfPointLight);
+    // shader.setInt("NR_POINT_LIGHTS", numOfPointLight);
+    // shader.setInt("NR_SPT_LIGHTS", numOfSpotLight);
 
     for (int i = 0; i < numOfPointLight; i++)
     {
@@ -294,15 +294,15 @@ void Light()
         glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.pointLightPositions[i]);
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        Lightshader.SetMatrix4FV("u_ModelMatrixLight", model);
+        Lightshader.setMatrix4FV("u_ModelMatrixLight", model);
 
         glm::mat4 view = gCamera.getViewMatrix();
-        Lightshader.SetMatrix4FV("u_ViewMatrixLight", view);
+        Lightshader.setMatrix4FV("u_ViewMatrixLight", view);
 
         glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
-        Lightshader.SetMatrix4FV("u_ProjectionLight", perspective);
+        Lightshader.setMatrix4FV("u_ProjectionLight", perspective);
 
-        Lightshader.SetFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
+        Lightshader.setFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
 
         LightSource.Draw(Lightshader);
     };
@@ -313,15 +313,15 @@ void Light()
         glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.SpotLightPositions[i]);
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 
-        Lightshader.SetMatrix4FV("u_ModelMatrixLight", model);
+        Lightshader.setMatrix4FV("u_ModelMatrixLight", model);
 
         glm::mat4 view = gCamera.getViewMatrix();
-        Lightshader.SetMatrix4FV("u_ViewMatrixLight", view);
+        Lightshader.setMatrix4FV("u_ViewMatrixLight", view);
 
         glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
-        Lightshader.SetMatrix4FV("u_ProjectionLight", perspective);
+        Lightshader.setMatrix4FV("u_ProjectionLight", perspective);
 
-        Lightshader.SetFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
+        Lightshader.setFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
 
         LightSource.Draw(Lightshader);
     };
@@ -348,8 +348,8 @@ void MainLoop()
         static float gamma = 2.2f;
 
         frameBufferShader.use();
-        frameBufferShader.Set1i("screenTexture", 0);
-        frameBufferShader.SetFloat("gamma", gamma);
+        frameBufferShader.set1i("screenTexture", 0);
+        frameBufferShader.setFloat("gamma", gamma);
         glBindVertexArray(windowMain.rectVAO);
         glDisable(GL_DEPTH_TEST); // prevents framebuffer rectangle from being discarded
         glBindTexture(GL_TEXTURE_2D, windowMain.frameBufferTexture);
@@ -437,17 +437,17 @@ int main()
     backPack.loadModel("./src/content/objects/sponza-scene/source/sponza/sponza.obj");
     LightSource.loadModel("./src/content/objects/light.obj");
 
-    shader.GraphicsPipeLine("./src/includes/shader/shaders/vertex.glsl",
-                            "./src/includes/shader/shaders/geometry.glsl",
-                            "./src/includes/shader/shaders/fragment.glsl");
+    shader.init("./src/includes/shader/shaders/vertex.glsl",
+                "./src/includes/shader/shaders/geometry.glsl",
+                "./src/includes/shader/shaders/fragment.glsl");
 
-    Lightshader.GraphicsPipeLine("./src/includes/shader/shaders/light.vertex.glsl",
-                                 "./src/includes/shader/shaders/light.geo.glsl",
-                                 "./src/includes/shader/shaders/light.fragment.glsl");
+    Lightshader.init("./src/includes/shader/shaders/light.vertex.glsl",
+                     "./src/includes/shader/shaders/light.geo.glsl",
+                     "./src/includes/shader/shaders/light.fragment.glsl");
 
-    frameBufferShader.GraphicsPipeLine("./src/includes/shader/shaders/fbo.vertex.glsl",
-                                       "./src/includes/shader/shaders/fbo.geo.glsl",
-                                       "./src/includes/shader/shaders/fbo.fragment.glsl");
+    frameBufferShader.init("./src/includes/shader/shaders/fbo.vertex.glsl",
+                           "./src/includes/shader/shaders/fbo.geo.glsl",
+                           "./src/includes/shader/shaders/fbo.fragment.glsl");
 
     engineGui.setupGUI(windowMain.GraphicsWinow, windowMain.OpenGLContext);
 
