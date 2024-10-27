@@ -26,34 +26,9 @@
 #include "includes/shader/shader.hpp"
 #include "includes/gui/gui.hpp"
 #include "includes/window/window.hpp"
+#include "includes/light/lightsettings.hpp"
 
-class LightSettings
-{
-
-public:
-    glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
-
-    // must edit numOfPointLight and NR_POINT_LIGHTS (fragment.glsl) if increase or decrease number of coords
-    std::vector<glm::vec3> pointLightPositions = {
-        glm::vec3(-10.0f, 1.0f, 0.0f),
-        glm::vec3(10.0f, 1.0f, 0.0f)};
-
-    // must edit numOfSpotLight and NR_SPT_LIGHTS (fragment.glsl) if increase or decrease number of coords
-    std::vector<glm::vec3> SpotLightPositions = {
-        glm::vec3(0.0f, 2.0f, 0.0f),
-
-    };
-    std::vector<glm::vec3> SpotLightAngles = {
-        glm::vec3(0.0f, -1.0f, 0.0f),
-
-    };
-
-    std::vector<glm::vec3> directionalLightAngles = {
-        glm::vec3(0.0f, 100.0f, -100.0f),
-    };
-};
 LightSettings lightSettings;
-
 WindowMain windowMain;
 Camera gCamera;
 GLuint gtexture;
@@ -253,13 +228,13 @@ void PreDraw()
     glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
     shader.setMatrix4FV("u_Projection", perspective);
 
-    shader.setFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
+    shader.setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
 
-    shader.setFloat3v("pointLights[0].position", lightSettings.pointLightPositions[0]);
-    shader.setFloat3v("pointLights[1].position", lightSettings.pointLightPositions[1]);
-    shader.setFloat3v("directionalLight[0].angle", lightSettings.directionalLightAngles[0]);
-    shader.setFloat3v("spotLight[0].position", lightSettings.SpotLightPositions[0]);
-    shader.setFloat3v("spotLight[0].angle", lightSettings.SpotLightAngles[0]);
+    shader.setFloat3v("pointLights[0].position", lightSettings.getPointLightPositions()[0]);
+    shader.setFloat3v("pointLights[1].position", lightSettings.getPointLightPositions()[1]);
+    shader.setFloat3v("directionalLight[0].angle", lightSettings.getDirectionalLightAngles()[0]);
+    shader.setFloat3v("spotLight[0].position", lightSettings.getSpotLightPositions()[0]);
+    shader.setFloat3v("spotLight[0].angle", lightSettings.getSpotLightAngles()[0]);
     shader.setFloat("FogDensity", FogDensity);
     shader.setFloat3v("FogColor", FogColor);
 
@@ -282,8 +257,8 @@ void Light()
 
     Lightshader.use();
 
-    int numOfPointLight = lightSettings.pointLightPositions.size();
-    int numOfSpotLight = lightSettings.SpotLightPositions.size();
+    int numOfPointLight = lightSettings.getPointLightPositions().size();
+    int numOfSpotLight = lightSettings.getSpotLightPositions().size();
     // shader.setInt("numOfPointLight", numOfPointLight);
     // shader.setInt("NR_POINT_LIGHTS", numOfPointLight);
     // shader.setInt("NR_SPT_LIGHTS", numOfSpotLight);
@@ -291,7 +266,7 @@ void Light()
     for (int i = 0; i < numOfPointLight; i++)
     {
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.pointLightPositions[i]);
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.getPointLightPositions()[i]);
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 
         Lightshader.setMatrix4FV("u_ModelMatrixLight", model);
@@ -302,7 +277,7 @@ void Light()
         glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
         Lightshader.setMatrix4FV("u_ProjectionLight", perspective);
 
-        Lightshader.setFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
+        Lightshader.setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
 
         LightSource.Draw(Lightshader);
     };
@@ -310,7 +285,7 @@ void Light()
     for (int i = 0; i < numOfSpotLight; i++)
     {
 
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.SpotLightPositions[i]);
+        glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.getSpotLightPositions()[i]);
         model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
 
         Lightshader.setMatrix4FV("u_ModelMatrixLight", model);
@@ -321,7 +296,7 @@ void Light()
         glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
         Lightshader.setMatrix4FV("u_ProjectionLight", perspective);
 
-        Lightshader.setFloat4("u_LightColor", lightSettings.lightColor.x, lightSettings.lightColor.y, lightSettings.lightColor.z, lightSettings.lightColor.w);
+        Lightshader.setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
 
         LightSource.Draw(Lightshader);
     };
@@ -357,13 +332,7 @@ void MainLoop()
 
         ImGui::ShowDemoWindow();
 
-        engineGui.GUIwindows(FogDensity,
-                             FogColor,
-                             lightSettings.lightColor,
-                             lightSettings.pointLightPositions,
-                             lightSettings.SpotLightPositions,
-                             lightSettings.SpotLightAngles,
-                             lightSettings.directionalLightAngles);
+        engineGui.GUIwindows(FogDensity, FogColor, lightSettings);
 
         engineGui.GUIrender();
 

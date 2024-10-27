@@ -1,13 +1,15 @@
-#ifndef GUI_HPP
-#define GUI_HPP
+#pragma once
 
 #include <iostream>
 #include <glm/glm.hpp>
+#include <SDL2/SDL.h>
+#include <vector>
+
 #include "../imgui/imgui.h"
 #include "../imgui/backends/imgui_impl_sdl2.h"
 #include "../imgui/backends/imgui_impl_opengl3.h"
-#include <SDL2/SDL.h>
-#include <vector>
+
+class LightSettings;
 
 class EngineGUI
 {
@@ -19,15 +21,9 @@ public:
     void GUISetupDrawWindow();
     void GUIwindows(float &fogDensity,
                     glm::vec3 &fogColor,
-                    glm::vec4 &lightColor,
-                    std::vector<glm::vec3> &pointLightPositions,
-                    std::vector<glm::vec3> &spotLightPositions,
-                    std::vector<glm::vec3> &spotLightAngles,
-                    std::vector<glm::vec3> &directionalLightAngles);
+                    LightSettings &lightSettings);
 
     void GUIrender();
 
     void cleanGUI();
 };
-
-#endif

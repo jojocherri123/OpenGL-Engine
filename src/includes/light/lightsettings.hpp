@@ -1,10 +1,10 @@
+#pragma once
 
-#include <iostream>
+#include <vector>
 
 class LightSettings
 {
 
-public:
     glm::vec4 lightColor = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 
     // must edit numOfPointLight and NR_POINT_LIGHTS (fragment.glsl) if increase or decrease number of coords
@@ -27,9 +27,17 @@ public:
     };
 
     unsigned int depthMapFBO;
-    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
 
     unsigned int frameBufferTexture;
     unsigned int rbo;
     unsigned int rectVAO, rectVBO;
+
+public:
+    const unsigned int SHADOW_WIDTH = 1024, SHADOW_HEIGHT = 1024;
+
+    glm::vec4& getLightColor() { return lightColor; }
+    std::vector<glm::vec3>& getPointLightPositions() { return pointLightPositions; }
+    std::vector<glm::vec3>& getSpotLightPositions() { return SpotLightPositions; }
+    std::vector<glm::vec3>& getSpotLightAngles() { return SpotLightAngles; }
+    std::vector<glm::vec3>& getDirectionalLightAngles() { return directionalLightAngles; }
 };

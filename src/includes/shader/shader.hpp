@@ -1,5 +1,4 @@
-#ifndef SHADER_HPP
-#define SHADER_HPP
+#pragma once
 
 #include <string>
 #include <fstream>
@@ -34,5 +33,3 @@ public:
     void setMatrix4FV(const GLchar *uniform, glm::mat4 value1);
     void set1i(const GLchar *uniform, int value1);
 };
-
-#endif

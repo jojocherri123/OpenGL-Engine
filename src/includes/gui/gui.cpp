@@ -1,4 +1,5 @@
 #include "gui.hpp"
+#include "../light/lightsettings.hpp"
 
 void EngineGUI::setupGUI(SDL_Window *window, SDL_GLContext opengl)
 {
@@ -21,11 +22,7 @@ void EngineGUI::GUISetupDrawWindow()
 
 void EngineGUI::GUIwindows(float &fogDensity,
                            glm::vec3 &fogColor,
-                           glm::vec4 &lightColor,
-                           std::vector<glm::vec3> &pointLightPositions,
-                           std::vector<glm::vec3> &spotLightPositions,
-                           std::vector<glm::vec3> &spotLightAngles,
-                           std::vector<glm::vec3> &directionalLightAngles)
+                           LightSettings &lightSettings)
 {
 
     static int selected = 0;
@@ -41,33 +38,33 @@ void EngineGUI::GUIwindows(float &fogDensity,
 
     ImGui::SeparatorText("Lights");
     ImGui::Text("Color");
-    ImGui::ColorEdit4("Light color", (float *)&lightColor);
+    ImGui::ColorEdit4("Light color", (float *)&lightSettings.getLightColor());
 
     // if (ImGui::Button("Add Point light")){
     //     std::cout << "added a point light" << std::endl;
-    //     pointLightPositions.push_back(glm::vec3(0.0f,0.0f,0.0f));
+    //     lightSettings.getPointLightPositions().push_back(glm::vec3(0.0f,0.0f,0.0f));
     // }
 
-    if (selected < pointLightPositions.size())
+    if (selected < lightSettings.getPointLightPositions().size())
     {
         ImGui::Text("Point Light");
         ImGui::PushID(selected);
-        ImGui::DragFloat3("", (float *)&pointLightPositions[selected], 0.1f);
+        ImGui::DragFloat3("", (float *)&lightSettings.getPointLightPositions()[selected], 0.1f);
         ImGui::PopID();
     }
-    else if (selected < pointLightPositions.size() + spotLightPositions.size())
+    else if (selected < lightSettings.getPointLightPositions().size() + lightSettings.getSpotLightPositions().size())
     {
         ImGui::Text("Spot Light");
-        ImGui::PushID(sizeof(pointLightPositions) / sizeof(glm::vec3) + selected);
-        ImGui::DragFloat3("Position", (float *)&spotLightPositions[selected - pointLightPositions.size()], 0.1f);
-        ImGui::SliderFloat3("Angle", (float *)&spotLightAngles[selected - pointLightPositions.size()], -1.0f, 1.0f);
+        ImGui::PushID(sizeof(lightSettings.getPointLightPositions()) / sizeof(glm::vec3) + selected);
+        ImGui::DragFloat3("Position", (float *)&lightSettings.getSpotLightPositions()[selected - lightSettings.getPointLightPositions().size()], 0.1f);
+        ImGui::SliderFloat3("Angle", (float *)&lightSettings.getSpotLightAngles()[selected - lightSettings.getPointLightPositions().size()], -1.0f, 1.0f);
         ImGui::PopID();
     }
-    else if (selected < pointLightPositions.size() + spotLightPositions.size() + directionalLightAngles.size())
+    else if (selected < lightSettings.getPointLightPositions().size() + lightSettings.getSpotLightPositions().size() + lightSettings.getDirectionalLightAngles().size())
     {
         ImGui::Text("Directional Light");
-        ImGui::PushID(sizeof(directionalLightAngles) / sizeof(glm::vec3) + sizeof(pointLightPositions) / sizeof(glm::vec3) + selected + 1);
-        ImGui::DragFloat3("", (float *)&directionalLightAngles[selected - pointLightPositions.size() - spotLightPositions.size()], 5.0f);
+        ImGui::PushID(sizeof(lightSettings.getDirectionalLightAngles()) / sizeof(glm::vec3) + sizeof(lightSettings.getPointLightPositions()) / sizeof(glm::vec3) + selected + 1);
+        ImGui::DragFloat3("", (float *)&lightSettings.getDirectionalLightAngles()[selected - lightSettings.getPointLightPositions().size() - lightSettings.getSpotLightPositions().size()], 5.0f);
         ImGui::PopID();
     }
 
@@ -78,7 +75,7 @@ void EngineGUI::GUIwindows(float &fogDensity,
 
     ImGui::Separator();
     ImGui::BeginChild("pane");
-    for (int i = 0; i < pointLightPositions.size() + spotLightPositions.size() + directionalLightAngles.size(); i++)
+    for (int i = 0; i < lightSettings.getPointLightPositions().size() + lightSettings.getSpotLightPositions().size() + lightSettings.getDirectionalLightAngles().size(); i++)
     {
         char label[128];
         sprintf(label, "Object %d", i);
