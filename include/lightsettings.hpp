@@ -15,12 +15,12 @@ class LightSettings
     // must edit numOfSpotLight and NR_SPT_LIGHTS (fragment.glsl) if increase or decrease number of coords
     std::vector<glm::vec3> SpotLightPositions = {
         glm::vec3(0.0f, 2.0f, 0.0f),
-        glm::vec3(1.0f, 2.0f, 0.0f)
+        
 
     };
     std::vector<glm::vec3> SpotLightAngles = {
         glm::vec3(0.0f, -1.0f, 0.0f),
-        glm::vec3(0.0f, -1.0f, 0.0f)};
+       };
 
     std::vector<glm::vec3> directionalLightAngles = {
         glm::vec3(0.0f, 30.0f, -30.0f),
