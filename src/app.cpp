@@ -74,16 +74,16 @@ void App::init()
     lightSource.loadModel("./assets/objects/light.obj");
 
     shader.init("./shaders/vertex.glsl",
-                "./shaders/geometry.glsl",
-                "./shaders/fragment.glsl");
+                "./shaders/fragment.glsl",
+                "./shaders/geometry.glsl");
 
     lightShader.init("./shaders/light.vertex.glsl",
-                     "./shaders/light.geo.glsl",
-                     "./shaders/light.fragment.glsl");
+                     "./shaders/light.fragment.glsl",
+                     "./shaders/light.geo.glsl");
 
     frameBufferShader.init("./shaders/fbo.vertex.glsl",
-                           "./shaders/fbo.geo.glsl",
-                           "./shaders/fbo.fragment.glsl");
+                           "./shaders/fbo.fragment.glsl",
+                           "./shaders/fbo.geo.glsl");
 
     engineGui.setup(*windowMain.GraphicsWinow, windowMain.OpenGLContext);
 }

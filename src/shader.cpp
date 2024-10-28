@@ -4,13 +4,15 @@ Shader::Shader()
 {
 }
 
-void Shader::init(const std::string &vertexPath, const std::string &geomPath, const std::string &fragmentPath)
+void Shader::init(const std::string &vertexPath, const std::string &fragmentPath, const std::string &geomPath)
 {
-    std::string VertexShaderSource = loadShaderAsString(vertexPath);
-    std::string GeometryShaderSource = loadShaderAsString(geomPath);
-    std::string FragmentShaderSource = loadShaderAsString(fragmentPath);
+    std::string geometryShaderSource;
+    if (!geomPath.empty())
+    {
+        geometryShaderSource = loadShaderAsString(geomPath);
+    }
 
-    id = createShaderProgram(VertexShaderSource, GeometryShaderSource, FragmentShaderSource);
+    id = createShaderProgram(loadShaderAsString(vertexPath), loadShaderAsString(fragmentPath), geometryShaderSource);
 }
 
 void Shader::use()
@@ -194,19 +196,18 @@ GLuint Shader::compileShader(GLuint type, const std::string &source)
     return ShaderObject;
 }
 
-GLuint Shader::createShaderProgram(const std::string &vs, const std::string &gs, const std::string &fs)
+GLuint Shader::createShaderProgram(const std::string &vs, const std::string &fs, const std::string &gs)
 {
     GLuint programObject = glCreateProgram();
-    GLuint myVertexShader = compileShader(GL_VERTEX_SHADER, vs);
-    GLuint myGeometryShader = compileShader(GL_GEOMETRY_SHADER, gs);
-    GLuint myFragmentShader = compileShader(GL_FRAGMENT_SHADER, fs);
 
-    glAttachShader(programObject, myVertexShader);
-    glAttachShader(programObject, myGeometryShader);
-    glAttachShader(programObject, myFragmentShader);
+    glAttachShader(programObject, compileShader(GL_VERTEX_SHADER, vs));
+    glAttachShader(programObject, compileShader(GL_FRAGMENT_SHADER, fs));
+    if (!gs.empty())
+    {
+        glAttachShader(programObject, compileShader(GL_GEOMETRY_SHADER, gs));
+    }
 
     glLinkProgram(programObject);
-
     glValidateProgram(programObject);
     return programObject;
 }

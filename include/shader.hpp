@@ -14,12 +14,12 @@ class Shader
 
     std::string loadShaderAsString(const std::string &filename);
     GLuint compileShader(GLuint type, const std::string &source);
-    GLuint createShaderProgram(const std::string &vs, const std::string &gs, const std::string &fs);
+    GLuint createShaderProgram(const std::string &vs, const std::string &fs, const std::string &gs);
 
 public:
     Shader();
     // ~Shader() { deleteShader(); }
-    void init(const std::string &vertexPath, const std::string &geomPath, const std::string &fragmentPath);
+    void init(const std::string &vertexPath, const std::string &fragmentPath, const std::string &geomPath = "");
 
     GLuint getId() const { return id; }
     void use();
