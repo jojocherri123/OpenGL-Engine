@@ -1,4 +1,8 @@
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "shader.hpp"
+#include "camera.hpp"
+#include "lightsettings.hpp"
 
 Shader::Shader()
 {
@@ -13,6 +17,53 @@ void Shader::init(const std::string &vertexPath, const std::string &fragmentPath
     }
 
     id = createShaderProgram(loadShaderAsString(vertexPath), loadShaderAsString(fragmentPath), geometryShaderSource);
+}
+
+void Shader::apply(Camera &camera, LightSettings &lightSettings, float fogDensity, glm::vec3 &fogColor, float aspectRatio)
+{
+    use();
+
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
+    // model = glm::rotate(model, glm::radians(g_uRotate), glm::vec3(0.0f,0.0f,0.0f));
+    model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
+
+    setMatrix4FV("u_ModelMatrix", model);
+
+    glm::mat4 view = camera.getViewMatrix();
+    setMatrix4FV("u_ViewMatrix", view);
+
+    glm::mat4 perspective = glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 1000.0f);
+    setMatrix4FV("u_Projection", perspective);
+
+    setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
+
+    setFloat3v("pointLights[0].position", lightSettings.getPointLightPositions()[0]);
+    setFloat3v("pointLights[1].position", lightSettings.getPointLightPositions()[1]);
+    setFloat3v("directionalLight[0].angle", lightSettings.getDirectionalLightAngles()[0]);
+    setFloat3v("spotLight[0].position", lightSettings.getSpotLightPositions()[0]);
+    setFloat3v("spotLight[0].angle", lightSettings.getSpotLightAngles()[0]);
+    setFloat("FogDensity", fogDensity);
+    setFloat3v("FogColor", fogColor);
+
+    setFloat3("u_CamPos", camera.mEye.x, camera.mEye.y, camera.mEye.z);
+
+    setFloat("material.shininess", 8.0f);
+}
+
+void Shader::applyLight(Camera &camera, LightSettings &lightSettings, glm::vec3 &lightPosition, float aspectRatio)
+{
+    glm::mat4 model = glm::translate(glm::mat4(1.0f), lightPosition);
+    model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
+
+    setMatrix4FV("u_ModelMatrixLight", model);
+
+    glm::mat4 view = camera.getViewMatrix();
+    setMatrix4FV("u_ViewMatrixLight", view);
+
+    glm::mat4 perspective = glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 1000.0f);
+    setMatrix4FV("u_ProjectionLight", perspective);
+
+    setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
 }
 
 void Shader::use()

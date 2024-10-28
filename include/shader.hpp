@@ -8,6 +8,8 @@
 
 #include "../glad/glad.h"
 
+class Camera;
+class LightSettings;
 class Shader
 {
     GLuint id = 0;
@@ -16,20 +18,23 @@ class Shader
     GLuint compileShader(GLuint type, const std::string &source);
     GLuint createShaderProgram(const std::string &vs, const std::string &fs, const std::string &gs);
 
+    void setInt(const GLchar *uniform, int value);
+    void setFloat3(const GLchar *uniform, float value1, float value2, float value3);
+    void setFloat3v(const GLchar *uniform, glm::vec3 value1);
+    void setFloat4(const GLchar *uniform, float value1, float value2, float value3, float value4);
+    void setMatrix4FV(const GLchar *uniform, glm::mat4 value1);
+
 public:
     Shader();
     // ~Shader() { deleteShader(); }
     void init(const std::string &vertexPath, const std::string &fragmentPath, const std::string &geomPath = "");
 
     GLuint getId() const { return id; }
+    void apply(Camera &camera, LightSettings &lightSettings, float fogDensity, glm::vec3 &fogColor, float aspectRatio);
+    void applyLight(Camera &camera, LightSettings &lightSettings, glm::vec3 &lightPosition, float aspectRatio);
     void use();
     void deleteShader();
 
     void setFloat(const GLchar *uniform, float value);
-    void setInt(const GLchar *uniform, int value);
-    void setFloat3(const GLchar *uniform, float value1, float value2, float value3);
-    void setFloat3v(const GLchar *uniform, glm::vec3 value1);
-    void setFloat4(const GLchar *uniform, float value1, float value2, float value3, float value4);
-    void setMatrix4FV(const GLchar *uniform, glm::mat4 value1);
     void set1i(const GLchar *uniform, int value1);
 };

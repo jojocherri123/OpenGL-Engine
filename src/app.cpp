@@ -272,33 +272,7 @@ void App::preDraw()
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     // glEnable(GL_FRAMEBUFFER_SRGB);
 
-    shader.use();
-
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 0.0f));
-    // model = glm::rotate(model, glm::radians(g_uRotate), glm::vec3(0.0f,0.0f,0.0f));
-    model = glm::scale(model, glm::vec3(2.0f, 2.0f, 2.0f));
-
-    shader.setMatrix4FV("u_ModelMatrix", model);
-
-    glm::mat4 view = camera.getViewMatrix();
-    shader.setMatrix4FV("u_ViewMatrix", view);
-
-    glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
-    shader.setMatrix4FV("u_Projection", perspective);
-
-    shader.setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
-
-    shader.setFloat3v("pointLights[0].position", lightSettings.getPointLightPositions()[0]);
-    shader.setFloat3v("pointLights[1].position", lightSettings.getPointLightPositions()[1]);
-    shader.setFloat3v("directionalLight[0].angle", lightSettings.getDirectionalLightAngles()[0]);
-    shader.setFloat3v("spotLight[0].position", lightSettings.getSpotLightPositions()[0]);
-    shader.setFloat3v("spotLight[0].angle", lightSettings.getSpotLightAngles()[0]);
-    shader.setFloat("FogDensity", fogDensity);
-    shader.setFloat3v("FogColor", fogColor);
-
-    shader.setFloat3("u_CamPos", camera.mEye.x, camera.mEye.y, camera.mEye.z);
-
-    shader.setFloat("material.shininess", 8.0f);
+    shader.apply(camera, lightSettings, fogDensity, fogColor, (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight);
 }
 
 void App::draw()
@@ -323,39 +297,13 @@ void App::processLights()
 
     for (int i = 0; i < numOfPointLight; i++)
     {
-
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.getPointLightPositions()[i]);
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-
-        lightShader.setMatrix4FV("u_ModelMatrixLight", model);
-
-        glm::mat4 view = camera.getViewMatrix();
-        lightShader.setMatrix4FV("u_ViewMatrixLight", view);
-
-        glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
-        lightShader.setMatrix4FV("u_ProjectionLight", perspective);
-
-        lightShader.setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
-
+        lightShader.applyLight(camera, lightSettings, lightSettings.getPointLightPositions()[i], (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight);
         lightSource.Draw(lightShader);
     };
 
     for (int i = 0; i < numOfSpotLight; i++)
     {
-
-        glm::mat4 model = glm::translate(glm::mat4(1.0f), lightSettings.getSpotLightPositions()[i]);
-        model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
-
-        lightShader.setMatrix4FV("u_ModelMatrixLight", model);
-
-        glm::mat4 view = camera.getViewMatrix();
-        lightShader.setMatrix4FV("u_ViewMatrixLight", view);
-
-        glm::mat4 perspective = glm::perspective(glm::radians(60.0f), (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight, 0.1f, 1000.0f);
-        lightShader.setMatrix4FV("u_ProjectionLight", perspective);
-
-        lightShader.setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
-
+        lightShader.applyLight(camera, lightSettings, lightSettings.getSpotLightPositions()[i], (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight);
         lightSource.Draw(lightShader);
     };
 }
