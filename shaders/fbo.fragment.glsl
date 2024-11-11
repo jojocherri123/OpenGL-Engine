@@ -1,7 +1,7 @@
 #version 460 core
 
 out vec4 FragColor;
-in vec2 texCoords;
+in vec2 TexCoords;
 
 uniform sampler2D screenTexture;
 uniform float gamma;
@@ -27,7 +27,7 @@ void main()
 {
     vec3 color = vec3(0.0f);
     for(int i = 0; i < 9; i++)
-        color += vec3(texture(screenTexture, texCoords.st + offsets[i])) * kernel[i];
+        color += vec3(texture(screenTexture, TexCoords.st + offsets[i])) * kernel[i];
     vec4 fragment = vec4(color, 1.0f);
 
 
