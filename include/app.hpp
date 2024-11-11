@@ -10,10 +10,13 @@
 #include "window.hpp"
 #include "lightsettings.hpp"
 
+class WindowMain;
+class OpenGLContext;
+
 class App
 {
     LightSettings lightSettings;
-    WindowMain windowMain;
+    WindowMain &windowMain;
     Camera camera;
     GLuint texture;
     Shader shader;
@@ -25,15 +28,13 @@ class App
     float fogDensity;
     glm::vec3 fogColor;
 
-    void initFrameBuffer();
-    void getOpengGLVersionInfo();
     void processInput();
     void preDraw();
     void draw();
     void processLights();
 
 public:
-    App(): fogColor(0.0f, 0.0f, 0.0f) {}
+    App(WindowMain &windowMain, OpenGLContext &context);
 
     void init();
     void run();

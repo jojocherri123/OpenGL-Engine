@@ -22,53 +22,14 @@
 #include <stb/stb_image.h>
 
 #include "app.hpp"
+#include "errorhandler.hpp"
+
+App::App(WindowMain &windowMain, OpenGLContext &context) : windowMain(windowMain), fogColor(0.0f, 0.0f, 0.0f) {
+    windowMain.initFrameBuffer();
+}
 
 void App::init()
 {
-    if (SDL_Init(SDL_INIT_VIDEO) < 0)
-    {
-        std::cout << "SDL COUDLNT LOAD" << SDL_GetError() << std::endl;
-        exit(1);
-    }
-
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 6);
-    SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-    SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-    SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-    SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-
-    windowMain.GraphicsWinow = SDL_CreateWindow("Shade Line Engine", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                                                windowMain.SCRNWidth, windowMain.SCRNHeight,
-                                                SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-
-    if (windowMain.GraphicsWinow == nullptr)
-    {
-        std::cout << "Couldn't create window" << std::endl;
-        exit(1);
-    }
-
-    windowMain.OpenGLContext = SDL_GL_CreateContext(windowMain.GraphicsWinow);
-    if (windowMain.OpenGLContext == nullptr)
-    {
-        std::cout << "Couldn't create opengl context" << std::endl;
-        exit(1);
-    }
-
-    if (!gladLoadGLLoader(SDL_GL_GetProcAddress))
-    {
-        std::cout << "Couldn't initialize glad" << std::endl;
-        exit(1);
-    }
-
-    SDL_SetWindowIcon(windowMain.GraphicsWinow, windowMain.iconSurface);
-
-    getOpengGLVersionInfo();
-
-    initFrameBuffer();
 
     backPack.loadModel("./assets/objects/sponza-scene/source/sponza/sponza.obj");
     lightSource.loadModel("./assets/objects/light.obj");
@@ -83,58 +44,13 @@ void App::init()
     frameBufferShader.init("./shaders/fbo.vertex.glsl",
                            "./shaders/fbo.fragment.glsl");
 
-    engineGui.setup(*windowMain.GraphicsWinow, windowMain.OpenGLContext);
-}
-
-void App::initFrameBuffer()
-{
-
-    float rectangleVertices[] = {
-        // positions   // texCoords
-        -1.0f, 1.0f, 0.0f, 1.0f,
-        -1.0f, -1.0f, 0.0f, 0.0f,
-        1.0f, -1.0f, 1.0f, 0.0f,
-
-        -1.0f, 1.0f, 0.0f, 1.0f,
-        1.0f, -1.0f, 1.0f, 0.0f,
-        1.0f, 1.0f, 1.0f, 1.0f};
-
-    glGenVertexArrays(1, &windowMain.rectVAO);
-    glGenBuffers(1, &windowMain.rectVBO);
-    glBindVertexArray(windowMain.rectVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, windowMain.rectVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(rectangleVertices), &rectangleVertices, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)(2 * sizeof(float)));
-
-    glGenFramebuffers(1, &windowMain.fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, windowMain.fbo);
-
-    glGenTextures(1, &windowMain.frameBufferTexture);
-    glBindTexture(GL_TEXTURE_2D, windowMain.frameBufferTexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, windowMain.SCRNWidth, windowMain.SCRNHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE); // Prevents edge bleeding
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, windowMain.frameBufferTexture, 0);
-
-    glGenRenderbuffers(1, &windowMain.rbo);
-    glBindRenderbuffer(GL_RENDERBUFFER, windowMain.rbo);
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, windowMain.SCRNWidth, windowMain.SCRNHeight);
-    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, windowMain.rbo);
-
-    auto fboStatus = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-    if (fboStatus != GL_FRAMEBUFFER_COMPLETE)
-        cout << "ERROR::FRAMEBUFFER:: " << fboStatus << endl;
+    engineGui.setup(*windowMain.getWindow(), windowMain.OpenGLContext);
 }
 
 void App::run()
 {
 
-    SDL_WarpMouseInWindow(windowMain.GraphicsWinow, windowMain.SCRNWidth / 2, windowMain.SCRNHeight / 2);
+    SDL_WarpMouseInWindow(windowMain.getWindow(), windowMain.SCRNWidth / 2, windowMain.SCRNHeight / 2);
     while (!windowMain.Quit)
     {
 
@@ -165,16 +81,8 @@ void App::run()
 
         engineGui.render();
 
-        SDL_GL_SwapWindow(windowMain.GraphicsWinow);
+        SDL_GL_SwapWindow(windowMain.getWindow());
     }
-}
-
-void App::getOpengGLVersionInfo()
-{
-    std::cout << "Vendor: " << glGetString(GL_VENDOR) << std::endl;
-    std::cout << "Renderer: " << glGetString(GL_RENDERER) << std::endl;
-    std::cout << "Version: " << glGetString(GL_VERSION) << std::endl;
-    std::cout << "Shading Language: " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 }
 
 void App::processInput()
@@ -312,6 +220,6 @@ void App::destroy()
     shader.deleteShader();
     lightShader.deleteShader();
     frameBufferShader.deleteShader();
-    SDL_DestroyWindow(windowMain.GraphicsWinow);
+    SDL_DestroyWindow(windowMain.getWindow());
     SDL_Quit();
 }
