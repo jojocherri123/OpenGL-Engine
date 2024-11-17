@@ -4,15 +4,15 @@ press M to free and unfree camera
 
 #### libraries required:
 - SDL2
-  - sudo apt install libsdl2-dev
+  - `sudo apt install libsdl2-dev`
 - SDL2 image
-  - sudo apt install libsdl2-image-dev
+  - `sudo apt install libsdl2-image-dev`
 - glm
-  - sudo apt install libglm-dev
+  - `sudo apt install libglm-dev`
 - assimp
-  - sudo apt install libassimp-dev
+  - `sudo apt install libassimp-dev`
 - stb
-  - sudo apt install libstb-dev
+  - `sudo apt install libstb-dev`
 
 ##### tested on Linux Ubuntu Budgie
 
