@@ -1,4 +1,5 @@
 #include <glm/gtc/matrix_transform.hpp>
+#include <string>
 
 #include "shader.hpp"
 #include "camera.hpp"
@@ -35,22 +36,44 @@ void Shader::apply(Camera &camera, LightSettings &lightSettings, float fogDensit
     glm::mat4 perspective = glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 1000.0f);
     setMatrix4FV("u_Projection", perspective);
 
-    setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
+    set1i("NR_POINT_LIGHTS", lightSettings.getPointLightPositions().size());
+    set1i("NR_SPT_LIGHTS", lightSettings.getSpotLightPositions().size());
+    set1i("NR_DIR_LIGHTS", lightSettings.getDirectionalLightAngles().size());
 
-    setFloat3v("pointLights[0].position", lightSettings.getPointLightPositions()[0]);
-    setFloat3v("pointLights[1].position", lightSettings.getPointLightPositions()[1]);
-    setFloat3v("directionalLight[0].angle", lightSettings.getDirectionalLightAngles()[0]);
-    setFloat3v("spotLight[0].position", lightSettings.getSpotLightPositions()[0]);
-    setFloat3v("spotLight[0].angle", lightSettings.getSpotLightAngles()[0]);
+    for (int i = 0; i < lightSettings.getPointLightPositions().size(); i++)
+    {
+        std::string number = std::to_string(i);
+        setFloat3v(("pointLights[" + number + "].position").c_str(), lightSettings.getPointLightPositions()[i]);
+        setFloat4v(("pointLights[" + number + "].color").c_str(), lightSettings.getPointLightColors()[i]);
+        setFloat(("pointLights[" + number + "].intensity").c_str(), lightSettings.getPointLightIntensities()[i]);
+    }
+
+    for (int i = 0; i < lightSettings.getDirectionalLightAngles().size(); i++)
+    {
+        std::string number = std::to_string(i);
+        setFloat3v(("directionalLight[" + number + "].angle").c_str(), lightSettings.getDirectionalLightAngles()[i]);
+        setFloat4v(("directionalLight[" + number + "].color").c_str(), lightSettings.getDirectionalLightColors()[i]);
+        setFloat(("directionalLight[" + number + "].intensity").c_str(), lightSettings.getDirectionalLightIntensities()[i]);
+    }
+
+    for (int i = 0; i < lightSettings.getSpotLightPositions().size(); i++)
+    {
+        std::string number = std::to_string(i);
+        setFloat3v(("spotLight[" + number + "].position").c_str(), lightSettings.getSpotLightPositions()[i]);
+        setFloat3v(("spotLight[" + number + "].angle").c_str(), lightSettings.getSpotLightAngles()[i]);
+        setFloat4v(("spotLight[" + number + "].color").c_str(), lightSettings.getSpotLightColors()[i]);
+        setFloat(("spotLight[" + number + "].intensity").c_str(), lightSettings.getSpotLightIntensities()[i]);
+    }
+
     setFloat("FogDensity", fogDensity);
     setFloat3v("FogColor", fogColor);
 
-    setFloat3("u_CamPos", camera.mEye.x, camera.mEye.y, camera.mEye.z);
+    setFloat3v("u_CamPos", camera.mEye);
 
-    setFloat("material.shininess", 8.0f);
+    setFloat("material.shininess", lightSettings.getShine());
 }
 
-void Shader::applyLight(Camera &camera, LightSettings &lightSettings, glm::vec3 &lightPosition, float aspectRatio)
+void Shader::applyLight(Camera &camera, LightSettings &lightSettings, glm::vec3 &lightPosition, glm::vec4 &lightColor, float aspectRatio)
 {
     glm::mat4 model = glm::translate(glm::mat4(1.0f), lightPosition);
     model = glm::scale(model, glm::vec3(1.0f, 1.0f, 1.0f));
@@ -63,7 +86,7 @@ void Shader::applyLight(Camera &camera, LightSettings &lightSettings, glm::vec3 
     glm::mat4 perspective = glm::perspective(glm::radians(60.0f), aspectRatio, 0.1f, 1000.0f);
     setMatrix4FV("u_ProjectionLight", perspective);
 
-    setFloat4("u_LightColor", lightSettings.getLightColor().x, lightSettings.getLightColor().y, lightSettings.getLightColor().z, lightSettings.getLightColor().w);
+    setFloat4v("u_LightColor", lightColor);
 }
 
 void Shader::use()
@@ -82,20 +105,6 @@ void Shader::setFloat(const GLchar *uniform, float value)
     if (UNIFORM >= 0)
     {
         glUniform1f(UNIFORM, value);
-    }
-    else
-    {
-        std::cout << "error finding " << uniform << " misspell?" << std::endl;
-        exit(1);
-    }
-}
-
-void Shader::setInt(const GLchar *uniform, int value)
-{
-    GLint UNIFORM = glGetUniformLocation(id, uniform);
-    if (UNIFORM >= 0)
-    {
-        glUniform1i(UNIFORM, value);
     }
     else
     {
@@ -146,6 +155,20 @@ void Shader::setFloat4(const GLchar *uniform, float value1, float value2, float 
     }
 }
 
+void Shader::setFloat4v(const GLchar *uniform, glm::vec4 value1)
+{
+    GLint UNIFORM = glGetUniformLocation(id, uniform);
+    if (UNIFORM >= 0)
+    {
+        glUniform4fv(UNIFORM, GL_TRUE, &value1[0]);
+    }
+    else
+    {
+        std::cout << "error finding " << uniform << " misspell?" << std::endl;
+        exit(1);
+    }
+}
+
 void Shader::setMatrix4FV(const GLchar *uniform, glm::mat4 value1)
 {
     GLint UNIFORM = glGetUniformLocation(id, uniform);
@@ -165,6 +188,7 @@ void Shader::set1i(const GLchar *uniform, int value1)
     GLint UNIFORM = glGetUniformLocation(id, uniform);
     if (UNIFORM >= 0)
     {
+        // std::cout << value1 << std::endl;
         glUniform1i(UNIFORM, value1);
     }
     else

@@ -21,6 +21,9 @@ public:
     void createMenus(float &fogDensity,
                      glm::vec3 &fogColor,
                      LightSettings &lightSettings);
+
+    void rightClickMenu();
+
     void render();
     void clean();
 };

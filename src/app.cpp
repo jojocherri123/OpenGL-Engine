@@ -11,6 +11,7 @@
 #include <imgui.h>
 #include <backends/imgui_impl_sdl2.h>
 #include <backends/imgui_impl_opengl3.h>
+#include <imgui_internal.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <glad.h>
@@ -24,7 +25,8 @@
 #include "app.hpp"
 #include "errorhandler.hpp"
 
-App::App(WindowMain &windowMain, OpenGLContext &context) : windowMain(windowMain), fogColor(0.0f, 0.0f, 0.0f) {
+App::App(WindowMain &windowMain, OpenGLContext &context) : windowMain(windowMain), fogColor(0.0f, 0.0f, 0.0f)
+{
     windowMain.initFrameBuffer();
 }
 
@@ -90,8 +92,10 @@ void App::processInput()
     static int mouseX = windowMain.SCRNWidth / 2;
     static int mouseY = windowMain.SCRNHeight / 2;
     static bool inputCapture = false;
+    static bool show_context_menu = false;
 
     const Uint8 *state = SDL_GetKeyboardState(NULL);
+    Uint32 buttonState = SDL_GetMouseState(NULL, NULL);
     SDL_Event e;
     while (SDL_PollEvent(&e) != 0)
     {
@@ -109,6 +113,11 @@ void App::processInput()
                 inputCapture = false;
                 SDL_SetRelativeMouseMode(SDL_FALSE);
             }
+        }
+        
+        if (buttonState & SDL_BUTTON(SDL_BUTTON_RIGHT)){
+            std::cout << "Right menu should pop" << std::endl;
+            // engineGui.rightClickMenu(x,y);
         }
 
         if (e.type == SDL_QUIT)
@@ -163,7 +172,7 @@ void App::processInput()
 
 void App::preDraw()
 {
-
+    // shader.use();
     glViewport(0, 0, windowMain.SCRNWidth, windowMain.SCRNHeight);
     glBindFramebuffer(GL_FRAMEBUFFER, windowMain.fbo);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
@@ -193,25 +202,27 @@ void App::draw()
 void App::processLights()
 {
 
-    lightShader.use();
-
     int numOfPointLight = lightSettings.getPointLightPositions().size();
+
     int numOfSpotLight = lightSettings.getSpotLightPositions().size();
-    // shader.setInt("numOfPointLight", numOfPointLight);
-    // shader.setInt("NR_POINT_LIGHTS", numOfPointLight);
-    // shader.setInt("NR_SPT_LIGHTS", numOfSpotLight);
+    // int numOfDirLight = lightSettings.getDirectionalLightAngles().size();
 
-    for (int i = 0; i < numOfPointLight; i++)
+    lightShader.use();
+    if (lightSettings.getShowLights())
     {
-        lightShader.applyLight(camera, lightSettings, lightSettings.getPointLightPositions()[i], (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight);
-        lightSource.Draw(lightShader);
-    };
 
-    for (int i = 0; i < numOfSpotLight; i++)
-    {
-        lightShader.applyLight(camera, lightSettings, lightSettings.getSpotLightPositions()[i], (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight);
-        lightSource.Draw(lightShader);
-    };
+        for (int i = 0; i < numOfPointLight; i++)
+        {
+            lightShader.applyLight(camera, lightSettings, lightSettings.getPointLightPositions()[i], lightSettings.getPointLightColors()[i], (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight);
+            lightSource.Draw(lightShader);
+        };
+
+        for (int i = 0; i < numOfSpotLight; i++)
+        {
+            lightShader.applyLight(camera, lightSettings, lightSettings.getSpotLightPositions()[i], lightSettings.getSpotLightColors()[i], (float)windowMain.SCRNWidth / (float)windowMain.SCRNHeight);
+            lightSource.Draw(lightShader);
+        };
+    }
 }
 
 void App::destroy()
